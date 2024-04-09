@@ -5,33 +5,27 @@ import com.github.britooo.looca.api.core.Looca;
 public class Sistema {
     private Looca looca;
     private Long tempoAtividade;
-
     private String sistemaOperacional;
-
     private Integer arquitetura;
-
     private String fabricante;
 
-    public Sistema() {
+    public Sistema(){
         this.looca = new Looca();
+        inicializarInformacoes();
+    }
+
+    private void inicializarInformacoes()  {
         this.tempoAtividade = looca.getSistema().getTempoDeAtividade();
         this.sistemaOperacional = looca.getSistema().getSistemaOperacional();
         this.arquitetura = looca.getSistema().getArquitetura();
         this.fabricante = looca.getSistema().getFabricante();
     }
 
-    public Long getTempoAtividade() {
-        return tempoAtividade;
-    }
-
     public void exibirInformacoesSistema() {
-        Long tempoAtividade = looca.getSistema().getTempoDeAtividade();
-        String sistemaOperacional = looca.getSistema().getSistemaOperacional();
-        Integer arquitetura = looca.getSistema().getArquitetura();
-        String fabricante = looca.getSistema().getFabricante();
+        long tempoAtividadeMinutos = tempoAtividade / 60; //minutos
 
-        System.out.println("Informações do Sistema:");
-        System.out.println("Tempo de Atividade: " + tempoAtividade + " segundos");
+        System.out.println("------Informações do Sistema------");
+        System.out.println("Tempo de Atividade: " + tempoAtividadeMinutos + " minutos");
         System.out.println("Sistema Operacional: " + sistemaOperacional);
         System.out.println("Arquitetura: " + arquitetura + " bits");
         System.out.println("Fabricante: " + fabricante);
@@ -64,6 +58,4 @@ public class Sistema {
     public void setFabricante(String fabricante) {
         this.fabricante = fabricante;
     }
-
-
 }
