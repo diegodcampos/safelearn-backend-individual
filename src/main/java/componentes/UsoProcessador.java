@@ -18,6 +18,7 @@ public class UsoProcessador {
     public void capturarInformacoesProcessador(){
         Looca looca = new Looca();
         Processador processadorInfo = looca.getProcessador();
+
         nome = processadorInfo.getNome();
         id = processadorInfo.getId();
         fabricante = processadorInfo.getFabricante();
