@@ -28,11 +28,4 @@ public class SystemCommandExecutor {
             e.printStackTrace();
         }
     }
-
-
-    public static void main(String[] args) {
-        SystemCommandExecutor.shutdown();
-        SystemCommandExecutor.restart();
-        SystemCommandExecutor.suspend();
-    }
 }
