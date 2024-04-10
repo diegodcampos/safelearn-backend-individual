@@ -9,11 +9,15 @@ import setup.Logar;
 
 import java.io.Console;
 import java.util.Scanner;
+
+import systemcommands.Bateria;
 import systemcommands.SystemCommandExecutor;
 
 
 public class App {
     public static void main(String[] args) {
+        Bateria bateria = new Bateria();
+        bateria.verificarBateria();
 
         //teste comandos remotos
 //        SystemCommandExecutor.shutdown();
