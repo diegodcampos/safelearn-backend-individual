@@ -1,3 +1,5 @@
+package systemcommands;
+
 import java.io.IOException;
 
 
@@ -7,6 +9,9 @@ public class SystemCommandExecutor {
     }
     public static void restart(){
         executeCommand("shutdown", "-r");
+    }
+    public static void suspend() {
+        executeCommand("shutdown", "-h");
     }
 
     private static void executeCommand(String... command) {
@@ -28,5 +33,6 @@ public class SystemCommandExecutor {
     public static void main(String[] args) {
         SystemCommandExecutor.shutdown();
         SystemCommandExecutor.restart();
+        SystemCommandExecutor.suspend();
     }
 }

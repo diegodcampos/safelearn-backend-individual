@@ -9,9 +9,15 @@ import setup.Logar;
 
 import java.io.Console;
 import java.util.Scanner;
+import systemcommands.SystemCommandExecutor;
+
 
 public class App {
     public static void main(String[] args) {
+
+        //teste comandos remotos
+        //SystemCommandExecutor.suspend();
+
         Sistema sistema = new Sistema();
         UsoProcessador processador = new UsoProcessador();
         Logar logar = new Logar();
@@ -27,6 +33,7 @@ public class App {
                 Fabricante: %s""".formatted(sistema.getSistemaOperacional(), sistema.getArquitetura(), sistema.getFabricante()));
 
         processador.exibirInformacoesProcessador();
+
     }
 }
 
