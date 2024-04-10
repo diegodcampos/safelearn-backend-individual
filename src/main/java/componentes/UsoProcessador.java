@@ -22,6 +22,7 @@ public class UsoProcessador {
         nome = processadorInfo.getNome();
         id = processadorInfo.getId();
         fabricante = processadorInfo.getFabricante();
+        uso = processadorInfo.getUso();
         frequencia = processadorInfo.getFrequencia();
         identificador = processadorInfo.getIdentificador();
         numeroCpusFisicas = processadorInfo.getNumeroCpusFisicas();

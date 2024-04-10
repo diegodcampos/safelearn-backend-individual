@@ -26,6 +26,7 @@ public class App {
 
         Sistema sistema = new Sistema();
         UsoProcessador processador = new UsoProcessador();
+        processador.exibirInformacoesProcessador();
         Logar logar = new Logar();
 
         logar.logar();
