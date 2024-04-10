@@ -16,7 +16,9 @@ public class App {
     public static void main(String[] args) {
 
         //teste comandos remotos
-        //SystemCommandExecutor.suspend();
+//        SystemCommandExecutor.shutdown();
+//        SystemCommandExecutor.restart();
+//        SystemCommandExecutor.suspend();
 
         Sistema sistema = new Sistema();
         UsoProcessador processador = new UsoProcessador();
