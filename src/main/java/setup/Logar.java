@@ -23,6 +23,6 @@ public class Logar {
             if(!autenticado) {
                 System.out.println("Credenciais inválidas. Tente novamente.");
             }
-        } while (nomeUsuario.equals(null) || senha.equals(null) || !autenticado);
+        } while (!autenticado);
     }
 }
