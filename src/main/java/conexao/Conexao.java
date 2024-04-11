@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conexao {
-    private static final String url = "jdbc:mysql://localhost:3306/safe-learn";
+    private static final String url = "jdbc:mysql://localhost:3306/safelearn";
     private static final String user = "root";
     private static final String password = "senha";
 
