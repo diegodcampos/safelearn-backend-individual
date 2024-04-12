@@ -10,7 +10,8 @@ public class Logar {
 
         String nomeUsuario;
         String senha;
-        Boolean autenticado;
+        Boolean autenticado = false;
+
         do {
             System.out.println("Nome de usuário: ");
             nomeUsuario = scanner.nextLine();
@@ -24,5 +25,6 @@ public class Logar {
                 System.out.println("Credenciais inválidas. Tente novamente.");
             }
         } while (!autenticado);
+        System.out.println("Login bem-sucedido!");
     }
 }
