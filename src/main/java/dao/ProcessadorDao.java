@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class ProcessadorDao {
     public void inserirDadosProcessador(UsoProcessador processador) {
-        String sql = "INSERT INTO dadosProcessador (id, modelo, fabricante, frequencia, identificador, cpusFisicas, microarquitetura, cpusLogicas) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO dadosProcessador (id, modelo, fabricante, frequencia, identificador, microarquitetura, cpusFisicas, cpusLogicas, uso) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement ps = null;
 
@@ -20,14 +20,15 @@ public class ProcessadorDao {
             ps.setString(3, processador.getFabricante());
             ps.setLong(4, processador.getFrequencia());
             ps.setString(5, processador.getIdentificador());
-            ps.setInt(6, processador.getNumeroCpusFisicas());
-            ps.setString(7, processador.getMicroarquitetura());
+            ps.setString(6, processador.getMicroarquitetura());
+            ps.setInt(7, processador.getNumeroCpusFisicas());
             ps.setInt(8, processador.getNumeroCpusLogicas());
+            ps.setDouble(9, processador.getUso());
 
             ps.execute();
             ps.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erro: " + e);
         }
     }
 }

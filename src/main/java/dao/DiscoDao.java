@@ -29,7 +29,7 @@ public class DiscoDao {
 
             ps.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erro: " + e);
         }
     }
 }
