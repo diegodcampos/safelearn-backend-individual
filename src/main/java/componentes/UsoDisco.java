@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UsoDisco {
-
+    private Looca looca;
     private List<Disco> discos;
     private Integer qtdDiscos;
     private List<Volume> listaVolumes;
@@ -15,36 +15,33 @@ public class UsoDisco {
     private List<String> modelosDisco;
     private List<Long> tamanhosDisco;
 
+    public UsoDisco() {
+        looca = new Looca();
+        capturarInformacoesDiscos();
+    }
+
     public  void capturarInformacoesDiscos(){
-        Looca looca = new Looca();
+        this.discos = looca.getGrupoDeDiscos().getDiscos();
+        this.qtdDiscos = looca.getGrupoDeDiscos().getQuantidadeDeDiscos();
+        this.listaVolumes = looca.getGrupoDeDiscos().getVolumes();
+        this.qtdVolumes = looca.getGrupoDeDiscos().getQuantidadeDeVolumes();
+        this.modelosDisco = new ArrayList<>();
+        this.tamanhosDisco = new ArrayList<>();
 
-       discos = looca.getGrupoDeDiscos().getDiscos();
-       qtdDiscos = looca.getGrupoDeDiscos().getQuantidadeDeDiscos();
-       listaVolumes = looca.getGrupoDeDiscos().getVolumes();
-       tamanhosDisco = new ArrayList<>();
-       qtdVolumes = looca.getGrupoDeDiscos().getQuantidadeDeVolumes();
-       modelosDisco = new ArrayList<>();
-
-       for (Disco disco : discos){
-         modelosDisco.add(disco.getModelo());
-         tamanhosDisco.add(disco.getTamanho());
-       }
-
+        for (Disco disco : discos){
+            this.modelosDisco.add(disco.getModelo());
+            this.tamanhosDisco.add(disco.getTamanho());
+        }
     }
 
     public void exibirInformacoesDeDiscos(){
-
-        capturarInformacoesDiscos();
         for (Disco disco : discos) {
             System.out.println(disco);
 
         }
-
         System.out.println(modelosDisco);
         System.out.println(tamanhosDisco);
-
     }
-
 
     public List<Disco> getDiscos() {
         return discos;

@@ -4,6 +4,7 @@ import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.processador.Processador;
 
 public class UsoProcessador {
+    private Looca looca;
     private String nome;
     private String id;
     private String fabricante;
@@ -14,25 +15,24 @@ public class UsoProcessador {
     private String microarquitetura;
     private Integer numeroCpusLogicas;
 
-
-    public void capturarInformacoesProcessador(){
-        Looca looca = new Looca();
-        Processador processadorInfo = looca.getProcessador();
-
-        nome = processadorInfo.getNome();
-        id = processadorInfo.getId();
-        fabricante = processadorInfo.getFabricante();
-        uso = processadorInfo.getUso();
-        frequencia = processadorInfo.getFrequencia();
-        identificador = processadorInfo.getIdentificador();
-        numeroCpusFisicas = processadorInfo.getNumeroCpusFisicas();
-        microarquitetura = processadorInfo.getMicroarquitetura();
-        numeroCpusLogicas = processadorInfo.getNumeroCpusLogicas();
+    public UsoProcessador() {
+        this.looca = new Looca();
+        capturarInformacoesProcessador();
     }
 
+    public void capturarInformacoesProcessador(){
+        this.nome = looca.getProcessador().getNome();
+        this.id = looca.getProcessador().getId();
+        this.fabricante = looca.getProcessador().getFabricante();
+        this.uso = looca.getProcessador().getUso();
+        this.frequencia = looca.getProcessador().getFrequencia();
+        this.identificador = looca.getProcessador().getIdentificador();
+        this.numeroCpusFisicas = looca.getProcessador().getNumeroCpusFisicas();
+        this.numeroCpusLogicas = looca.getProcessador().getNumeroCpusLogicas();
+        this.microarquitetura = looca.getProcessador().getMicroarquitetura();
+    }
 
     public void exibirInformacoesProcessador() {
-        capturarInformacoesProcessador();
         System.out.println("\n------Informações do Processador------");
         System.out.println("Fabricante: " + fabricante);
         System.out.println("Uso do Processador: " + uso + "%");
