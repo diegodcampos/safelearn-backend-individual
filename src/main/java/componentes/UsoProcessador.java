@@ -30,6 +30,7 @@ public class UsoProcessador {
         this.numeroCpusFisicas = looca.getProcessador().getNumeroCpusFisicas();
         this.numeroCpusLogicas = looca.getProcessador().getNumeroCpusLogicas();
         this.microarquitetura = looca.getProcessador().getMicroarquitetura();
+        this.uso = looca.getProcessador().getUso();
     }
 
     public void exibirInformacoesProcessador() {
