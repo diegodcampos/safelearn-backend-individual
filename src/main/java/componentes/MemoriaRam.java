@@ -2,16 +2,20 @@ package componentes;
 import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.memoria.Memoria;
 public class MemoriaRam {
+    private Looca looca;
     private Long memoriaTotal;
     private Long memoriaEmUso;
     private Long memoriaDisponivel;
-    public void captarInformacoesMemoria() {
-        Looca looca = new Looca();
-        Memoria memoria = looca.getMemoria();
 
-        memoriaTotal = memoria.getTotal();
-        memoriaEmUso = memoria.getEmUso();
-        memoriaDisponivel = memoria.getDisponivel();
+    public MemoriaRam() {
+        this.looca = new Looca();
+        captarInformacoesMemoria();
+    }
+
+    public void captarInformacoesMemoria() {
+        this.memoriaTotal = looca.getMemoria().getTotal();
+        this.memoriaEmUso = looca.getMemoria().getEmUso();
+        this.memoriaDisponivel = looca.getMemoria().getDisponivel();
     }
 
     public void exibirInformacoesMemoria() {
@@ -22,6 +26,17 @@ public class MemoriaRam {
         System.out.println("Memória Disponível: " + memoriaDisponivel + " GB");
     }
 
+    public Long getMemoriaTotal() {
+        return memoriaTotal;
+    }
+
+    public Long getMemoriaEmUso() {
+        return memoriaEmUso;
+    }
+
+    public Long getMemoriaDisponivel() {
+        return memoriaDisponivel;
+    }
 }
 
 
