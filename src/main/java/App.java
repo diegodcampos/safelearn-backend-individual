@@ -8,6 +8,7 @@ public class App {
         UsoProcessador processador = new UsoProcessador();
         MemoriaRam memoriaram = new MemoriaRam();
         System.out.println(processador.toStringSimplified());
+        System.out.println(memoriaram.toString());
 
         Logar logar = new Logar();
         logar.logar();

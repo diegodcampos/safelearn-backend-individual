@@ -13,30 +13,23 @@ public class MemoriaRam {
     }
 
     public void captarInformacoesMemoria() {
-        this.memoriaTotal = looca.getMemoria().getTotal();
-        this.memoriaEmUso = looca.getMemoria().getEmUso();
-        this.memoriaDisponivel = looca.getMemoria().getDisponivel();
+        Memoria memoria = looca.getMemoria();
+        this.memoriaTotal = memoria.getTotal() / (1024 * 1024 * 1024);
+        this.memoriaEmUso = memoria.getEmUso() / (1024 * 1024 * 1024);
+        this.memoriaDisponivel = memoria.getDisponivel() / (1024 * 1024 * 1024);
     }
 
-    public void exibirInformacoesMemoria() {
-        captarInformacoesMemoria();
-        System.out.println("\n------Informações da Memória RAM------");
-        System.out.println("Memória Total: " + memoriaTotal + " GB");
-        System.out.println("Memória em Uso: " + memoriaEmUso + " GB");
-        System.out.println("Memória Disponível: " + memoriaDisponivel + " GB");
-    }
+    @Override
+    public String toString() {
+        return String.format("\n"
+                        + "__________________________________\n"
+                        + "|      Informações da Memória    |\n"
+                        + "|--------------------------------|\n"
+                        + "| Memória Total: %d GB           |\n"
+                        + "| Memória em Uso: %d GB           |\n"
+                        + "| Memória Disponível: %d GB       |\n"
+                        + "__________________________________\n",
 
-    public Long getMemoriaTotal() {
-        return memoriaTotal;
-    }
-
-    public Long getMemoriaEmUso() {
-        return memoriaEmUso;
-    }
-
-    public Long getMemoriaDisponivel() {
-        return memoriaDisponivel;
+                memoriaTotal, memoriaEmUso, memoriaDisponivel);
     }
 }
-
-
