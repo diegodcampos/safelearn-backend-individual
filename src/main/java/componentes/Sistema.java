@@ -21,41 +21,20 @@ public class Sistema {
         this.fabricante = looca.getSistema().getFabricante();
     }
 
-    public void exibirInformacoesSistema() {
-        long tempoAtividadeMinutos = tempoAtividade / 60; //minutos
+    @Override
+    public String toString() {
+        long tempoAtividadeMinutos = tempoAtividade / 60; // minutos
 
-        System.out.println("------Informações do Sistema------");
-        System.out.println("Tempo de Atividade: " + tempoAtividadeMinutos + " minutos");
-        System.out.println("Sistema Operacional: " + sistemaOperacional);
-        System.out.println("Arquitetura: " + arquitetura + " bits");
-        System.out.println("Fabricante: " + fabricante);
+        return String.format("\n"
+                        + "______________________________\n"
+                        + "|  Informações do Sistema    |\n"
+                        + "|----------------------------|\n"
+                        + "| Tempo de Atividade: %d minutos |\n"
+                        + "| Sistema Operacional: %s    |\n"
+                        + "| Arquitetura: %d bits        |\n"
+                        + "| Fabricante: %s             |\n"
+                        + "______________________________\n",
+                tempoAtividadeMinutos, sistemaOperacional, arquitetura, fabricante);
     }
 
-    public void setTempoAtividade(Long tempoAtividade) {
-        this.tempoAtividade = tempoAtividade;
-    }
-
-    public String getSistemaOperacional() {
-        return sistemaOperacional;
-    }
-
-    public void setSistemaOperacional(String sistemaOperacional) {
-        this.sistemaOperacional = sistemaOperacional;
-    }
-
-    public Integer getArquitetura() {
-        return arquitetura;
-    }
-
-    public void setArquitetura(Integer arquitetura) {
-        this.arquitetura = arquitetura;
-    }
-
-    public String getFabricante() {
-        return fabricante;
-    }
-
-    public void setFabricante(String fabricante) {
-        this.fabricante = fabricante;
-    }
 }
