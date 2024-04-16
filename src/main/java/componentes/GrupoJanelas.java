@@ -37,6 +37,7 @@ public class GrupoJanelas {
         builder.append("\nDetalhes das Janelas:\n");
         List<Janela> janelas = getJanelas();
         for (Janela janela : janelas) {
+            System.out.println("---- Janela ----");
             builder.append(janela).append("\n");
         }
         return builder.toString();

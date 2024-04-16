@@ -37,4 +37,23 @@ public class Sistema {
                 tempoAtividadeMinutos, sistemaOperacional, arquitetura, fabricante);
     }
 
+    public Looca getLooca() {
+        return looca;
+    }
+
+    public Long getTempoAtividade() {
+        return tempoAtividade;
+    }
+
+    public String getSistemaOperacional() {
+        return sistemaOperacional;
+    }
+
+    public Integer getArquitetura() {
+        return arquitetura;
+    }
+
+    public String getFabricante() {
+        return fabricante;
+    }
 }

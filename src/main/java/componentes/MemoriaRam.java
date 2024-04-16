@@ -32,4 +32,20 @@ public class MemoriaRam {
 
                 memoriaTotal, memoriaEmUso, memoriaDisponivel);
     }
+
+    public Looca getLooca() {
+        return looca;
+    }
+
+    public Long getMemoriaTotal() {
+        return memoriaTotal;
+    }
+
+    public Long getMemoriaEmUso() {
+        return memoriaEmUso;
+    }
+
+    public Long getMemoriaDisponivel() {
+        return memoriaDisponivel;
+    }
 }

@@ -56,4 +56,40 @@ public class UsoProcessador {
                         + "______________________________\n",
                 frequencia / 1e9, uso);
     }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getFabricante() {
+        return fabricante;
+    }
+
+    public Double getUso() {
+        return uso;
+    }
+
+    public Long getFrequencia() {
+        return frequencia;
+    }
+
+    public String getIdentificador() {
+        return identificador;
+    }
+
+    public Integer getNumeroCpusFisicas() {
+        return numeroCpusFisicas;
+    }
+
+    public String getMicroarquitetura() {
+        return microarquitetura;
+    }
+
+    public Integer getNumeroCpusLogicas() {
+        return numeroCpusLogicas;
+    }
 }
