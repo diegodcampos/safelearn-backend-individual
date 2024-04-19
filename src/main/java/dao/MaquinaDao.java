@@ -8,10 +8,37 @@ import conexao.Conexao;
 import oshi.util.Memoizer;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 public class MaquinaDao {
+    public Boolean verificarRegistro(UsoProcessador processador) {
+        String sql = "SELECT * FROM maquina WHERE idProcessador = (?)";
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = Conexao.getConexao().prepareStatement(sql);
+
+            ps.setString(1, processador.getId());
+            rs = ps.executeQuery();
+
+            return rs.next();
+        } catch (SQLException e) {
+            System.out.println("Erro: " + e);
+            return false;
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                System.out.println("Erro: " + e);
+            }
+        }
+    }
+
     public void inserirDadosMaquina(UsoProcessador processador, Sistema sistema, UsoDisco disco, MemoriaRam memoriaRam) {
         String sql = "INSERT INTO maquina (idProcessador, modeloProcessador, fabricanteProcessador, identificador, microarquitetura, frequencia, cpusFisicas, cpusLogicas, usoProcessador, so, arquitetura, fabricanteSo, memoriaRamTotal, memoriaRamEmUso, memoriaRamDisponivel, modeloDisco, tamanhoDisco, modeloDisco2, tamanhoDisco2) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
