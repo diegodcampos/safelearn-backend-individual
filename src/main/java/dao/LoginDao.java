@@ -20,8 +20,17 @@ public class LoginDao {
             ps.setString(2, senha);
 
             rs = ps.executeQuery();
-            //
-            return rs.next();
+
+            while (rs.next()) {
+                String nomeUsuarioBanco = rs.getString("nomeUsuario");
+                String senhaBanco = rs.getString("senha");
+
+                if (nomeUsuario.equals(nomeUsuarioBanco) && senha.equals(senhaBanco)) {
+                    return true;
+                }
+            }
+
+            return false;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class Conexao {
     private static final String url = "jdbc:mysql://localhost:3306/safelearn";
     private static final String user = "root";
-    private static final String password = "24053845";
+    private static final String password = "senha";
 
     private static Connection connection;
 
