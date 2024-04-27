@@ -39,7 +39,7 @@ public class MaquinaDao {
         }
     }
 
-    public void inserirDadosMaquina(UsoProcessador processador, Sistema sistema, UsoDisco disco, MemoriaRam memoriaRam) {
+   public void inserirDadosMaquina(UsoProcessador processador, Sistema sistema, UsoDisco disco, MemoriaRam memoriaRam) {
         String sql = "INSERT INTO maquina (idProcessador, modeloProcessador, fabricanteProcessador, identificador, microarquitetura, frequencia, cpusFisicas, cpusLogicas, usoProcessador, so, arquitetura, fabricanteSo, memoriaRamTotal, memoriaRamEmUso, memoriaRamDisponivel, modeloDisco, tamanhoDisco, modeloDisco2, tamanhoDisco2) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         PreparedStatement ps = null;
@@ -83,5 +83,31 @@ public class MaquinaDao {
         } catch (SQLException e) {
             System.out.println("Erro: " + e);
         }
+    }
+
+
+    public void inserirDadosMaquina(UsoProcessador processador, Sistema sistema){
+
+        String sql = "INSERT INTO maquina (idProcessador,nome,sistemaOperacional) VALUES (?,?,?);";
+        PreparedStatement ps = null;
+
+        try {
+
+            ps = Conexao.getConexao().prepareStatement(sql);
+
+            ps.setString(1, processador.getId());
+            ps.setString(2, processador.getNome());
+            ps.setString(3, sistema.getSistemaOperacional());
+
+            ps.executeUpdate();
+            ps.close();
+        }catch (SQLException e) {
+            System.out.println("Erro: " + e);
+        }
+
+    }
+
+    public void inserirDadosComponente(){
+
     }
 }

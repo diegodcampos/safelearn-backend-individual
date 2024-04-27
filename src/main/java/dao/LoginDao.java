@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class LoginDao {
     public boolean autenticarUsuario(String nomeUsuario, String senha) {
-        String sql = "SELECT * FROM teste WHERE nomeUsuario = ? AND senha = ?";
+        String sql = "SELECT * FROM usuario WHERE userName = ? AND senhaUsuario = ?";
 
         PreparedStatement ps = null;
         ResultSet rs = null;
