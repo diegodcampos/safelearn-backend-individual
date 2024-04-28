@@ -15,6 +15,8 @@ public class UsoDisco {
     private List<String> modelosDisco;
     private List<Long> tamanhosDisco;
 
+
+
     public UsoDisco() {
         looca = new Looca();
         capturarInformacoesDiscos();
@@ -55,9 +57,7 @@ public class UsoDisco {
         return listaVolumes;
     }
 
-    public List<Long> getTamanhosDisco() {
-        return tamanhosDisco;
-    }
+    public List<Long> getTamanhosDisco() {return tamanhosDisco;}
 
     public Integer getQtdVolumes() {
         return qtdVolumes;

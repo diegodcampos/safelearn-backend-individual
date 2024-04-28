@@ -22,8 +22,8 @@ public class LoginDao {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                String nomeUsuarioBanco = rs.getString("nomeUsuario");
-                String senhaBanco = rs.getString("senha");
+                String nomeUsuarioBanco = rs.getString("userName");
+                String senhaBanco = rs.getString("senhaUsuario");
 
                 if (nomeUsuario.equals(nomeUsuarioBanco) && senha.equals(senhaBanco)) {
                     return true;

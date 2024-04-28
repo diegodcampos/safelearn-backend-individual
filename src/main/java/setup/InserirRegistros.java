@@ -14,20 +14,25 @@ public class InserirRegistros {
     public void inserirRegistros() {
         UsoProcessador processador = new UsoProcessador();
         Sistema sistema = new Sistema();
-        UsoDisco usoDisco = new UsoDisco();
-        MemoriaRam memoriaram = new MemoriaRam();
+        MemoriaRam memoria = new MemoriaRam();
+        UsoDisco disco = new UsoDisco();
+
 
         Boolean possuiRegistro;
         possuiRegistro = new MaquinaDao().verificarRegistro(processador);
 
         if(!possuiRegistro) {
-            new MaquinaDao().inserirDadosMaquina(processador, sistema, usoDisco, memoriaram);
+            new MaquinaDao().inserirDadosMaquina(processador, sistema);
+            new MaquinaDao().inserirDadosComponente(processador, memoria, disco);
+
             System.out.println("Registrado com sucesso!");
-            String stringHardware = processador.toStringSimplified() + sistema.toString() + memoriaram.toString();
+            String stringHardware = processador.toStringSimplified() + sistema.toString() + memoria.toString() + disco.toString();
             System.out.println("Aqui estão algumas informações básicas sobre sua máquina:");
             System.out.println(stringHardware);
         } else {
             System.out.println("A máquina está sendo monitorada.");
         }
     }
+
+
 }
