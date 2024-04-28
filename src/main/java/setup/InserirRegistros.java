@@ -26,7 +26,7 @@ public class InserirRegistros {
             new MaquinaDao().inserirDadosComponente(processador, memoria, disco);
 
             System.out.println("Registrado com sucesso!");
-            String stringHardware = processador.toStringSimplified() + sistema.toString() + memoria.toString() + disco.toString();
+            String stringHardware = processador.toStringSimplified() + sistema.toString() + memoria.toString() + disco.exibirInformacoesDeDiscos();
             System.out.println("Aqui estão algumas informações básicas sobre sua máquina:");
             System.out.println(stringHardware);
         } else {

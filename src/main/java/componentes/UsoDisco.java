@@ -16,13 +16,12 @@ public class UsoDisco {
     private List<Long> tamanhosDisco;
 
 
-
     public UsoDisco() {
         looca = new Looca();
         capturarInformacoesDiscos();
     }
 
-    public  void capturarInformacoesDiscos(){
+    public void capturarInformacoesDiscos() {
         this.discos = looca.getGrupoDeDiscos().getDiscos();
         this.qtdDiscos = looca.getGrupoDeDiscos().getQuantidadeDeDiscos();
         this.listaVolumes = looca.getGrupoDeDiscos().getVolumes();
@@ -30,19 +29,23 @@ public class UsoDisco {
         this.modelosDisco = new ArrayList<>();
         this.tamanhosDisco = new ArrayList<>();
 
-        for (Disco disco : discos){
+        for (Disco disco : discos) {
             this.modelosDisco.add(disco.getModelo());
             this.tamanhosDisco.add(disco.getTamanho());
         }
     }
 
-    public void exibirInformacoesDeDiscos(){
-        for (Disco disco : discos) {
-            System.out.println(disco);
-
+    public String exibirInformacoesDeDiscos() {
+        String string = "__________________________________\n";
+               string += "|      Informações de Disco     |\n";
+        string += "|--------------------------------|\n";
+        string += "| Quantidade de Discos: " + getQtdDiscos() + " |\n";
+        for (int i = 0; i < discos.size(); i++) {
+            Disco disco = discos.get(i);
+            string += "| Tamanho do Disco %d: %d GB |\n ".formatted(i+1, disco.getTamanho() / (1024 * 1024 * 1024));
         }
-        System.out.println(modelosDisco);
-        System.out.println(tamanhosDisco);
+        string += "__________________________________\n";
+        return string;
     }
 
     public List<Disco> getDiscos() {
@@ -57,13 +60,15 @@ public class UsoDisco {
         return listaVolumes;
     }
 
-    public List<Long> getTamanhosDisco() {return tamanhosDisco;}
+    public List<Long> getTamanhosDisco() {
+        return tamanhosDisco;
+    }
 
     public Integer getQtdVolumes() {
         return qtdVolumes;
     }
 
-    public List<String> getModelosDisco() {
-        return modelosDisco;
-    }
+    //public List<String> getModelosDisco() {
+    //   return modelosDisco;
+    //}
 }
