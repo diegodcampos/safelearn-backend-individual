@@ -76,7 +76,7 @@ public class MaquinaDao {
             ps = Conexao.getConexao().prepareStatement(sql);
 
             ps.setString(1, "processador");
-            ps.setDouble(2, processador.getFrequencia());
+            ps.setDouble(2, processador.getFrequencia() / 1e9);
             ps.setString(3, "Gz");
             ps.setString(4, processador.getId());
             ps.addBatch();
