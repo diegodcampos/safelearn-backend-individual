@@ -4,6 +4,7 @@ import componentes.MemoriaRam;
 import componentes.Sistema;
 import componentes.UsoDisco;
 import componentes.UsoProcessador;
+import dao.LoginDao;
 import dao.MaquinaDao;
 
 public class InserirRegistros {
@@ -20,9 +21,11 @@ public class InserirRegistros {
 
         Boolean possuiRegistro;
         possuiRegistro = new MaquinaDao().verificarRegistro(processador);
+        String nomeUsuario = new Logar().getNomeUsuario();
+        Integer fkInstituicao = new LoginDao().obterFkInstituicao(nomeUsuario);
 
         if(!possuiRegistro) {
-            new MaquinaDao().inserirDadosMaquina(processador, sistema);
+            new MaquinaDao().inserirDadosMaquina(processador, sistema, fkInstituicao);
             new MaquinaDao().inserirDadosComponente(processador, memoria, disco);
 
             System.out.println("Registrado com sucesso!");

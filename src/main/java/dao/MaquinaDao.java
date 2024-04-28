@@ -44,9 +44,9 @@ public class MaquinaDao {
 
 
 
-    public void inserirDadosMaquina(UsoProcessador processador, Sistema sistema) {
+    public void inserirDadosMaquina(UsoProcessador processador, Sistema sistema, Integer fkInstituicao) {
 
-        String sql = "INSERT INTO maquina (idProcessador,nome,sistemaOperacional) VALUES (?,?,?);";
+        String sql = "INSERT INTO maquina (idProcessador,nome,sistemaOperacional, fkinstituicao) VALUES (?,?,?,?);";
         PreparedStatement ps = null;
 
         try {
@@ -56,6 +56,7 @@ public class MaquinaDao {
             ps.setString(1, processador.getId());
             ps.setString(2, processador.getNome());
             ps.setString(3, sistema.getSistemaOperacional());
+            ps.setInt(4, fkInstituicao);
 
             ps.executeUpdate();
             ps.close();

@@ -5,11 +5,16 @@ import dao.LoginDao;
 import java.util.Scanner;
 
 public class Logar {
+    private String nomeUsuario;
+    private String senha;
+
+    public Logar() {
+        logar();
+    }
+
     public void logar() {
         Scanner scanner = new Scanner(System.in);
 
-        String nomeUsuario;
-        String senha;
         Boolean autenticado = false;
 
         do {
@@ -26,5 +31,9 @@ public class Logar {
             }
         } while (!autenticado);
         System.out.println("Login bem-sucedido!");
+    }
+
+    public String getNomeUsuario() {
+        return nomeUsuario;
     }
 }

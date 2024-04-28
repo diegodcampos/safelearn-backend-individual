@@ -1,6 +1,7 @@
 package dao;
 
 import conexao.Conexao;
+import setup.Logar;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -43,4 +44,34 @@ public class LoginDao {
             }
         }
     }
+
+    public Integer obterFkInstituicao(String nomeUsuario) {
+        String sql = "SELECT fkInstituicao FROM usuario WHERE userName = ?";
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            ps = Conexao.getConexao().prepareStatement(sql);
+            ps.setString(1, nomeUsuario);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                return rs.getInt("fkInstituicao");
+            }
+
+            return 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
+
