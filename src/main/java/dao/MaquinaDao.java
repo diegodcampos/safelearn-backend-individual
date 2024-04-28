@@ -67,8 +67,7 @@ public class MaquinaDao {
 
     public void inserirDadosComponente(UsoProcessador processador, MemoriaRam memoria, UsoDisco disco) {
 
-
-        String sql = "INSERT INTO componente (nomeComponente, valorComponente, tipoCaptura, fkProcessador) VALUES (?, ?, ?, ?);";
+        String sql = "INSERT INTO componente (nomeComponente, valorComponente, tipoCaptura, fkProcessador) VALUES (?, ?, ?, ?)";
         PreparedStatement ps = null;
 
         try {
@@ -79,26 +78,25 @@ public class MaquinaDao {
             ps.setDouble(2, processador.getFrequencia());
             ps.setString(3, "Gz");
             ps.setString(4, processador.getId());
-            ps.executeUpdate();
+            ps.addBatch();
 
-            ps.setString(5, "memoria");
-            ps.setDouble(6, memoria.getMemoriaTotal());
-            ps.setString(7, "Gb");
-            ps.setString(8, processador.getId());
-            ps.executeUpdate();
+            ps.setString(1, "memoria");
+            ps.setDouble(2, memoria.getMemoriaTotal());
+            ps.setString(3, "Gb");
+            ps.setString(4, processador.getId());
+            ps.addBatch();
 
-            List<Long> tamanhosDisco = disco.getTamanhosDisco();
-            for (Long tamanho : tamanhosDisco) {
-                ps.setString(9, "disco");
-                ps.setDouble(10, tamanho);
-                ps.setString(11, "Gb");
-                ps.setString(12, processador.getId());
-                ps.executeUpdate();
+            List<Disco> discos = disco.getDiscos();
+            for (Disco discoDaVez : discos) {
+                ps.setString(1, "disco");
+                ps.setDouble(2, discoDaVez.getTamanho() / (1024 * 1024 * 1024));
+                ps.setString(3, "Gb");
+                ps.setString(4, processador.getId());;
+                ps.addBatch();
             }
 
-
+            ps.executeBatch();
             ps.close();
-
         } catch (SQLException e) {
             System.out.println("Erro: " + e);
         }
