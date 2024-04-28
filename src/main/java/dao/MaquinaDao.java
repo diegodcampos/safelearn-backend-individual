@@ -68,7 +68,7 @@ public class MaquinaDao {
 
     public void inserirDadosComponente(UsoProcessador processador, MemoriaRam memoria, UsoDisco disco) {
 
-        String sql = "INSERT INTO componente (nomeComponente, valorComponente, tipoCaptura, fkProcessador) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO componente (nomeComponente, valorComponente, tipoCaptura, fkMaquina) VALUES (?, ?, ?, ?)";
         PreparedStatement ps = null;
 
         try {
