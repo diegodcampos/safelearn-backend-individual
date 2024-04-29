@@ -82,7 +82,7 @@ public class MaquinaDao {
             ps.addBatch();
 
             ps.setString(1, "memoria");
-            ps.setDouble(2, memoria.getMemoriaTotal());
+            ps.setDouble(2, memoria.getMemoriaTotal() / Math.pow(10, 9));
             ps.setString(3, "Gb");
             ps.setString(4, processador.getId());
             ps.addBatch();

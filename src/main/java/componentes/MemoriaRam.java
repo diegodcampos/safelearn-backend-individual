@@ -3,9 +3,9 @@ import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.memoria.Memoria;
 public class MemoriaRam {
     private Looca looca;
-    private Long memoriaTotal;
-    private Long memoriaEmUso;
-    private Long memoriaDisponivel;
+    private Double memoriaTotal;
+    private Double memoriaEmUso;
+    private Double memoriaDisponivel;
 
     public MemoriaRam() {
         this.looca = new Looca();
@@ -14,9 +14,9 @@ public class MemoriaRam {
 
     public void captarInformacoesMemoria() {
         Memoria memoria = looca.getMemoria();
-        this.memoriaTotal = memoria.getTotal() / (1024 * 1024 * 1024);
-        this.memoriaEmUso = memoria.getEmUso() / (1024 * 1024 * 1024);
-        this.memoriaDisponivel = memoria.getDisponivel() / (1024 * 1024 * 1024);
+        this.memoriaTotal = memoria.getTotal() / Math.pow(10, 9);
+        this.memoriaEmUso = memoria.getEmUso() / Math.pow(10, 9);
+        this.memoriaDisponivel = memoria.getDisponivel() / Math.pow(10, 9);
     }
 
     @Override
@@ -25,9 +25,9 @@ public class MemoriaRam {
                         + "__________________________________\n"
                         + "|      Informações da Memória    |\n"
                         + "|--------------------------------|\n"
-                        + "| Memória Total: %d GB           |\n"
-                        + "| Memória em Uso: %d GB           |\n"
-                        + "| Memória Disponível: %d GB       |\n"
+                        + "| Memória Total: %.2f GB           |\n"
+                        + "| Memória em Uso: %.2f GB           |\n"
+                        + "| Memória Disponível: %.2f GB       |\n"
                         + "__________________________________\n",
 
                 memoriaTotal, memoriaEmUso, memoriaDisponivel);
@@ -37,15 +37,15 @@ public class MemoriaRam {
         return looca;
     }
 
-    public Long getMemoriaTotal() {
+    public Double getMemoriaTotal() {
         return memoriaTotal;
     }
 
-    public Long getMemoriaEmUso() {
+    public Double getMemoriaEmUso() {
         return memoriaEmUso;
     }
 
-    public Long getMemoriaDisponivel() {
+    public Double getMemoriaDisponivel() {
         return memoriaDisponivel;
     }
 }
