@@ -68,7 +68,7 @@ public class MaquinaDao {
 
     public void inserirDadosComponente(UsoProcessador processador, MemoriaRam memoria, UsoDisco disco) {
 
-        String sql = "INSERT INTO componente (nomeComponente, valorComponente, tipoCaptura, fkMaquina) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO componente (nomeComponente, especificacaoComponente, unidadeDeMedida, fkMaquina) VALUES (?, ?, ?, ?)";
         PreparedStatement ps = null;
 
         try {
@@ -77,7 +77,7 @@ public class MaquinaDao {
 
             ps.setString(1, "processador");
             ps.setDouble(2, processador.getFrequencia() / 1e9);
-            ps.setString(3, "Gz");
+            ps.setString(3, "GHz");
             ps.setString(4, processador.getId());
             ps.addBatch();
 
@@ -101,6 +101,29 @@ public class MaquinaDao {
         } catch (SQLException e) {
             System.out.println("Erro: " + e);
         }
+    }
+
+    public List<Integer> obterIdsComponentes(UsoProcessador processador) {
+
+        List<Integer> idsComponentes = new ArrayList<>();
+        String sql = "SELECT idComponente FROM componente WHERE fkMaquina = ? ORDER BY CASE WHEN nomeComponente = 'processador' THEN 1  WHEN nomeComponente = 'memoria' THEN 2 WHEN nomeComponente = 'disco' THEN 3 END";
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+
+            ps = Conexao.getConexao().prepareStatement(sql);
+            ps.setString(1, processador.getId());
+            rs = ps.executeQuery();
+
+            while(rs.next()) {
+                idsComponentes.add(rs.getInt("idComponente"));
+            }
+
+        } catch(SQLException e) {
+            System.out.println("Erro: " + e);
+        }
+        return idsComponentes;
     }
 }
 
