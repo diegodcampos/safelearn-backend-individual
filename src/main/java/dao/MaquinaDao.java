@@ -103,7 +103,7 @@ public class MaquinaDao {
         }
     }
 
-    public List<Integer> obterIdsComponentes(UsoProcessador processador) {
+    public List<Integer> getIdsComponentes(UsoProcessador processador) {
 
         List<Integer> idsComponentes = new ArrayList<>();
         String sql = "SELECT idComponente FROM componente WHERE fkMaquina = ? ORDER BY CASE WHEN nomeComponente = 'processador' THEN 1  WHEN nomeComponente = 'memoria' THEN 2 WHEN nomeComponente = 'disco' THEN 3 END";

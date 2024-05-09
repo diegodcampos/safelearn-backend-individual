@@ -45,7 +45,7 @@ public class LoginDao {
         }
     }
 
-    public Integer obterFkInstituicao(String nomeUsuario) {
+    public Integer getFkInstituicao(String nomeUsuario) {
         String sql = "SELECT fkInstituicao FROM usuario WHERE userName = ?";
 
         PreparedStatement ps = null;

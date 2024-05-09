@@ -22,7 +22,7 @@ public class InserirRegistros {
         Boolean possuiRegistro;
         possuiRegistro = new MaquinaDao().verificarRegistro(processador);
         String nomeUsuario = new Logar().getNomeUsuario();
-        Integer fkInstituicao = new LoginDao().obterFkInstituicao(nomeUsuario);
+        Integer fkInstituicao = new LoginDao().getFkInstituicao(nomeUsuario);
 
         if(!possuiRegistro) {
             new MaquinaDao().inserirDadosMaquina(processador, sistema, fkInstituicao);
