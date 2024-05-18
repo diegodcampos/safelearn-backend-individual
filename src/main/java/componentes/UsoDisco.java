@@ -6,7 +6,7 @@ import com.github.britooo.looca.api.group.discos.Volume;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsoDisco {
+public class UsoDisco extends Componente {
     private Looca looca;
     private List<Disco> discos;
     private Integer qtdDiscos;
@@ -19,6 +19,12 @@ public class UsoDisco {
     public UsoDisco() {
         looca = new Looca();
         capturarInformacoesDiscos();
+    }
+
+    @Override
+    public void inicializarInformacoes() {
+        this.discos = looca.getGrupoDeDiscos().getDiscos();
+        this.qtdDiscos = looca.getGrupoDeDiscos().getQuantidadeDeDiscos();
     }
 
     public void capturarInformacoesDiscos() {
@@ -71,4 +77,18 @@ public class UsoDisco {
     //public List<String> getModelosDisco() {
     //   return modelosDisco;
     //}
+
+
+    @Override
+    public String toString() {
+        return "UsoDisco{" +
+                "looca=" + looca +
+                ", discos=" + discos +
+                ", qtdDiscos=" + qtdDiscos +
+                ", listaVolumes=" + listaVolumes +
+                ", qtdVolumes=" + qtdVolumes +
+                ", modelosDisco=" + modelosDisco +
+                ", tamanhosDisco=" + tamanhosDisco +
+                '}';
+    }
 }

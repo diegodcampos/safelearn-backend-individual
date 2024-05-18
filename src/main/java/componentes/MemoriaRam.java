@@ -1,15 +1,23 @@
 package componentes;
 import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.memoria.Memoria;
-public class MemoriaRam {
+public class MemoriaRam extends Componente {
     private Looca looca;
     private Double memoriaTotal;
     private Double memoriaEmUso;
     private Double memoriaDisponivel;
 
+
     public MemoriaRam() {
         this.looca = new Looca();
         captarInformacoesMemoria();
+    }
+
+    @Override
+    public void inicializarInformacoes() {
+        this.memoriaTotal = looca.getMemoria().getTotal() / Math.pow(10, 9);;
+        this.memoriaEmUso = looca.getMemoria().getEmUso()  / Math.pow(10, 9);
+        this.memoriaDisponivel = looca.getMemoria().getDisponivel() / Math.pow(10, 9);
     }
 
     public void captarInformacoesMemoria() {

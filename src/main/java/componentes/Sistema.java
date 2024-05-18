@@ -2,7 +2,7 @@ package componentes;
 
 import com.github.britooo.looca.api.core.Looca;
 
-public class Sistema {
+public class Sistema extends Componente{
     private Looca looca;
     private Long tempoAtividade;
     private String sistemaOperacional;
@@ -14,12 +14,15 @@ public class Sistema {
         inicializarInformacoes();
     }
 
-    private void inicializarInformacoes()  {
+
+    @Override
+    public void inicializarInformacoes() {
         this.tempoAtividade = looca.getSistema().getTempoDeAtividade();
         this.sistemaOperacional = looca.getSistema().getSistemaOperacional();
         this.arquitetura = looca.getSistema().getArquitetura();
         this.fabricante = looca.getSistema().getFabricante();
     }
+
 
     @Override
     public String toString() {

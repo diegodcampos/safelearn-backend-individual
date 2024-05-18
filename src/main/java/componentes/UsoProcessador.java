@@ -2,7 +2,9 @@ package componentes;
 import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.processador.Processador;
 
-public class UsoProcessador {
+public class UsoProcessador extends Componente {
+
+    private Looca looca;
     private String nome;
     private String id;
     private String fabricante;
@@ -12,6 +14,14 @@ public class UsoProcessador {
     private Integer numeroCpusFisicas;
     private String microarquitetura;
     private Integer numeroCpusLogicas;
+
+    @Override
+    public void inicializarInformacoes() {
+      this.id = looca.getProcessador().getId();
+      this.nome = looca.getProcessador().getNome();
+      this.uso = looca.getProcessador().getUso();
+      this.frequencia = looca.getProcessador().getFrequencia();
+    }
 
     public UsoProcessador() {
         Looca looca = new Looca();
@@ -27,6 +37,7 @@ public class UsoProcessador {
         this.numeroCpusLogicas = processador.getNumeroCpusLogicas();
         this.microarquitetura = processador.getMicroarquitetura();
     }
+
 
     @Override
     public String toString() {
