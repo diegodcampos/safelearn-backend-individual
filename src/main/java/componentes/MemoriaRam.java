@@ -8,9 +8,9 @@ public class MemoriaRam extends Componente {
     private Double memoriaDisponivel;
 
 
-    public MemoriaRam() {
-        this.looca = new Looca();
-        captarInformacoesMemoria();
+    public MemoriaRam(Looca looca) {
+        super(looca);
+        inicializarInformacoes();
     }
 
     @Override
@@ -20,12 +20,6 @@ public class MemoriaRam extends Componente {
         this.memoriaDisponivel = looca.getMemoria().getDisponivel() / Math.pow(10, 9);
     }
 
-    public void captarInformacoesMemoria() {
-        Memoria memoria = looca.getMemoria();
-        this.memoriaTotal = memoria.getTotal() / Math.pow(10, 9);
-        this.memoriaEmUso = memoria.getEmUso() / Math.pow(10, 9);
-        this.memoriaDisponivel = memoria.getDisponivel() / Math.pow(10, 9);
-    }
 
     @Override
     public String toString() {

@@ -16,8 +16,9 @@ public class UsoDisco extends Componente {
     private List<Long> tamanhosDisco;
 
 
-    public UsoDisco() {
-        looca = new Looca();
+
+    public UsoDisco(Looca looca) {
+        super(looca);
         capturarInformacoesDiscos();
     }
 

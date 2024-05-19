@@ -10,13 +10,14 @@ public abstract class Componente {
         this.looca = new Looca();
     }
 
-    public Componente() {
-    }
 
     public abstract void inicializarInformacoes();
 
     public Looca getLooca() {
         return looca;
+    }
+
+    public Componente() {
     }
 
     @Override

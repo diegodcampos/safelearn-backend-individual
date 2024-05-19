@@ -23,22 +23,11 @@ public class UsoProcessador extends Componente {
       this.frequencia = looca.getProcessador().getFrequencia();
     }
 
-    public UsoProcessador() {
-        Looca looca = new Looca();
-        Processador processador = looca.getProcessador();
-
-        this.nome = processador.getNome();
-        this.id = processador.getId();
-        this.fabricante = processador.getFabricante();
-        this.uso = processador.getUso();
-        this.frequencia = processador.getFrequencia();
-        this.identificador = processador.getIdentificador();
-        this.numeroCpusFisicas = processador.getNumeroCpusFisicas();
-        this.numeroCpusLogicas = processador.getNumeroCpusLogicas();
-        this.microarquitetura = processador.getMicroarquitetura();
+    public UsoProcessador(Looca looca) {
+        super(looca);
+        inicializarInformacoes();
     }
-
-
+    
     @Override
     public String toString() {
         return String.format("\n"

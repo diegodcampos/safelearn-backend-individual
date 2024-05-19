@@ -9,10 +9,16 @@ public class Sistema extends Componente{
     private Integer arquitetura;
     private String fabricante;
 
-    public Sistema(){
-        this.looca = new Looca();
-        inicializarInformacoes();
+
+    public Sistema(Looca looca, Looca looca1, Long tempoAtividade, String sistemaOperacional, Integer arquitetura, String fabricante) {
+        super(looca);
+        this.looca = looca1;
+        this.tempoAtividade = tempoAtividade;
+        this.sistemaOperacional = sistemaOperacional;
+        this.arquitetura = arquitetura;
+        this.fabricante = fabricante;
     }
+
 
 
     @Override
