@@ -1,10 +1,9 @@
 package componentes;
+
 import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.processador.Processador;
 
 public class UsoProcessador extends Componente {
-
-    private Looca looca;
     private String nome;
     private String id;
     private String fabricante;
@@ -15,47 +14,45 @@ public class UsoProcessador extends Componente {
     private String microarquitetura;
     private Integer numeroCpusLogicas;
 
-    @Override
-    public void inicializarInformacoes() {
-      this.id = looca.getProcessador().getId();
-      this.nome = looca.getProcessador().getNome();
-      this.uso = looca.getProcessador().getUso();
-      this.frequencia = looca.getProcessador().getFrequencia();
-    }
-
-    public UsoProcessador(Looca looca) {
-        super(looca);
+    public UsoProcessador() {
+        super();
         inicializarInformacoes();
     }
-    
+
     @Override
-    public String toString() {
-        return String.format("\n"
-                        + "__________________________________\n"
-                        + "|   Informações do Processador   |\n"
-                        + "|--------------------------------|\n"
-                        + "| Fabricante: %s\n"
-                        + "| Nome: %s\n"
-                        + "| ID: %s\n"
-                        + "| Uso: %.2f%%\n"
-                        + "| Frequência: %.2f GHz\n"
-                        + "| Identificador: %s\n"
-                        + "| Número de CPUs Físicas: %d\n"
-                        + "| Microarquitetura: %s\n"
-                        + "| Número de CPUs Lógicas: %d\n",
-                fabricante, nome, id, uso, frequencia / 1e9, identificador, numeroCpusFisicas, microarquitetura, numeroCpusLogicas);
+    public void inicializarInformacoes() {
+        Processador processador = looca.getProcessador();
+
+        this.nome = processador.getNome();
+        this.id = processador.getId();
+        this.fabricante = processador.getFabricante();
+        this.uso = processador.getUso();
+        this.frequencia = processador.getFrequencia();
+        this.identificador = processador.getIdentificador();
+        this.numeroCpusFisicas = processador.getNumeroCpusFisicas();
+        this.numeroCpusLogicas = processador.getNumeroCpusLogicas();
+        this.microarquitetura = processador.getMicroarquitetura();
     }
 
-    public String toStringSimplified() {
+    @Override
+    public String toString() {
         return String.format("\n"
                         + "______________________________\n"
                         + "|      Uso do Processador     |\n"
                         + "|-----------------------------|\n"
-                        + "| Total (frequecia): %.2f GHz |\n"
-                        + "| Uso: %.2f%%                  |\n"
+                        + "| Nome: %s                    |\n"
+                        + "| ID: %s                      |\n"
+                        + "| Fabricante: %s              |\n"
+                        + "| Total (frequencia): %.2f GHz |\n"
+                        + "| Uso: %.2f%%                 |\n"
+                        + "| Identificador: %s           |\n"
+                        + "| Numero de CPUs Físicas: %d  |\n"
+                        + "| Numero de CPUs Lógicas: %d  |\n"
+                        + "| Microarquitetura: %s        |\n"
                         + "______________________________\n",
-                frequencia / 1e9, uso);
+                nome, id, fabricante, frequencia / 1e9, uso, identificador, numeroCpusFisicas, numeroCpusLogicas, microarquitetura);
     }
+
 
     public String getNome() {
         return nome;

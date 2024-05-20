@@ -3,21 +3,16 @@ package componentes;
 import com.github.britooo.looca.api.core.Looca;
 
 public abstract class Componente {
+    protected Looca looca;
 
-    private Looca looca;
-
-    public Componente(Looca looca) {
-        this.looca = new Looca();
+    public Componente() {
+        looca = new Looca();
     }
-
 
     public abstract void inicializarInformacoes();
 
     public Looca getLooca() {
         return looca;
-    }
-
-    public Componente() {
     }
 
     @Override
