@@ -2,19 +2,20 @@ package componentes;
 
 import com.github.britooo.looca.api.core.Looca;
 
-public class Sistema {
-    private Looca looca;
+public class Sistema extends Componente{
+
     private Long tempoAtividade;
     private String sistemaOperacional;
     private Integer arquitetura;
     private String fabricante;
 
     public Sistema(){
-        this.looca = new Looca();
+       super();
         inicializarInformacoes();
     }
 
-    private void inicializarInformacoes()  {
+    @Override
+    public void inicializarInformacoes() {
         this.tempoAtividade = looca.getSistema().getTempoDeAtividade();
         this.sistemaOperacional = looca.getSistema().getSistemaOperacional();
         this.arquitetura = looca.getSistema().getArquitetura();
@@ -23,7 +24,7 @@ public class Sistema {
 
     @Override
     public String toString() {
-        long tempoAtividadeMinutos = tempoAtividade / 60; // minutos
+        long tempoAtividadeMinutos = tempoAtividade / 60;
 
         return String.format("\n"
                         + "______________________________\n"
@@ -31,7 +32,7 @@ public class Sistema {
                         + "|----------------------------|\n"
                         + "| Tempo de Atividade: %d minutos |\n"
                         + "| Sistema Operacional: %s    |\n"
-                        + "| Arquitetura: %d bits        |\n"
+                        + "| Arquitetura: %d bits       |\n"
                         + "| Fabricante: %s             |\n"
                         + "______________________________\n",
                 tempoAtividadeMinutos, sistemaOperacional, arquitetura, fabricante);
