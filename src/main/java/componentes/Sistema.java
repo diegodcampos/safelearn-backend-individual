@@ -24,7 +24,7 @@ public class Sistema extends Componente{
 
     @Override
     public String toString() {
-        long tempoAtividadeMinutos = tempoAtividade / 60; // minutos
+        long tempoAtividadeMinutos = tempoAtividade / 60;
 
         return String.format("\n"
                         + "______________________________\n"

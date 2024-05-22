@@ -10,36 +10,30 @@ import java.util.List;
 public class UsoDisco extends Componente {
     private List<Disco> discos;
     private Integer qtdDiscos;
-    private List<Volume> listaVolumes;
-    private Integer qtdVolumes;
-    private List<String> modelosDisco;
-    private List<Long> tamanhosDisco;
 
     public UsoDisco() {
         super();
-        capturarInformacoesDiscos();
+       inicializarInformacoes();
     }
 
     @Override
     public void inicializarInformacoes() {
         this.discos = looca.getGrupoDeDiscos().getDiscos();
         this.qtdDiscos = looca.getGrupoDeDiscos().getQuantidadeDeDiscos();
-        this.listaVolumes = looca.getGrupoDeDiscos().getVolumes();
-        this.qtdVolumes = looca.getGrupoDeDiscos().getQuantidadeDeVolumes();
     }
 
-    public void capturarInformacoesDiscos() {
-        inicializarInformacoes();
-        this.modelosDisco = new ArrayList<>();
-        this.tamanhosDisco = new ArrayList<>();
 
-        for (Disco disco : discos) {
-            this.modelosDisco.add(disco.getModelo());
-            this.tamanhosDisco.add(disco.getTamanho());
-        }
+    public List<Disco> getDiscos() {
+        return discos;
     }
 
-    public String exibirInformacoesDeDiscos() {
+    public Integer getQtdDiscos() {
+        return qtdDiscos;
+    }
+
+
+    @Override
+    public String toString() {
         StringBuilder string = new StringBuilder("__________________________________\n");
         string.append("|      Informações de Disco     |\n");
         string.append("|--------------------------------|\n");
@@ -52,36 +46,6 @@ public class UsoDisco extends Componente {
         string.append("__________________________________\n");
         return string.toString();
     }
-
-    public List<Disco> getDiscos() {
-        return discos;
-    }
-
-    public Integer getQtdDiscos() {
-        return qtdDiscos;
-    }
-
-    public List<Volume> getListaVolumes() {
-        return listaVolumes;
-    }
-
-    public List<Long> getTamanhosDisco() {
-        return tamanhosDisco;
-    }
-
-    public Integer getQtdVolumes() {
-        return qtdVolumes;
-    }
-
-    @Override
-    public String toString() {
-        return "UsoDisco{" +
-                "discos=" + discos +
-                ", qtdDiscos=" + qtdDiscos +
-                ", listaVolumes=" + listaVolumes +
-                ", qtdVolumes=" + qtdVolumes +
-                ", modelosDisco=" + modelosDisco +
-                ", tamanhosDisco=" + tamanhosDisco +
-                '}';
-    }
 }
+
+

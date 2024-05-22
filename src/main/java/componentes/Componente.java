@@ -15,10 +15,5 @@ public abstract class Componente {
         return looca;
     }
 
-    @Override
-    public String toString() {
-        return "Componente{" +
-                "looca=" + looca +
-                '}';
-    }
+
 }
