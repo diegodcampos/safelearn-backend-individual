@@ -5,7 +5,8 @@ import componentes.MemoriaRam;
 import componentes.Sistema;
 import componentes.UsoDisco;
 import componentes.UsoProcessador;
-import conexao.Conexao;
+import conexao.ConexaoLocal;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,13 +16,15 @@ import java.util.List;
 public class MaquinaDaoLocal extends MaquinaDao{
     @Override
     public Boolean verificarRegistro(UsoProcessador processador) {
-        String sql = "SELECT * FROM maquina WHERE idProcessador = (?)";
 
+        String sql = "SELECT * FROM maquina WHERE idProcessador = (?)";
+        ConexaoLocal conexaoLocal = new ConexaoLocal();
+        Connection connectionLocal = conexaoLocal.getConexao();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         try {
-            ps = Conexao.getConexao().prepareStatement(sql);
+            ps = connectionLocal.prepareStatement(sql);
 
             ps.setString(1, processador.getId());
             rs = ps.executeQuery();
@@ -44,11 +47,13 @@ public class MaquinaDaoLocal extends MaquinaDao{
     public void inserirDadosMaquina(UsoProcessador processador, Sistema sistema, Integer fkInstituicao) {
 
         String sql = "INSERT INTO maquina (idProcessador,nome,sistemaOperacional, fkinstituicao) VALUES (?,?,?,?);";
+        ConexaoLocal conexaoLocal = new ConexaoLocal();
+        Connection connectionLocal = conexaoLocal.getConexao();
         PreparedStatement ps = null;
 
         try {
 
-            ps = Conexao.getConexao().prepareStatement(sql);
+            ps = connectionLocal.prepareStatement(sql);
 
             ps.setString(1, processador.getId());
             ps.setString(2, processador.getNome());
@@ -60,18 +65,19 @@ public class MaquinaDaoLocal extends MaquinaDao{
         } catch (SQLException e) {
             System.out.println("Erro: " + e);
         }
-
     }
 
     @Override
     public void inserirDadosComponente(UsoProcessador processador, MemoriaRam memoria, UsoDisco disco) {
 
         String sql = "INSERT INTO componente (nomeComponente, especificacaoComponente, unidadeDeMedida, fkMaquina) VALUES (?, ?, ?, ?)";
+        ConexaoLocal conexaoLocal = new ConexaoLocal();
+        Connection connectionLocal = conexaoLocal.getConexao();
         PreparedStatement ps = null;
 
         try {
 
-            ps = Conexao.getConexao().prepareStatement(sql);
+            ps = connectionLocal.prepareStatement(sql);
 
             ps.setString(1, "processador");
             ps.setDouble(2, processador.getFrequencia() / 1e9);
@@ -89,7 +95,7 @@ public class MaquinaDaoLocal extends MaquinaDao{
             for (Disco discoDaVez : discos) {
                 ps.setString(1, "disco");
                 ps.setDouble(2, discoDaVez.getTamanho() / (1024 * 1024 * 1024));
-                ps.setString(3, "Gb");
+                ps.setString(3, "GB");
                 ps.setString(4, processador.getId());;
                 ps.addBatch();
             }
@@ -106,12 +112,14 @@ public class MaquinaDaoLocal extends MaquinaDao{
 
         List<Integer> idsComponentes = new ArrayList<>();
         String sql = "SELECT idComponente FROM componente WHERE fkMaquina = ? ORDER BY CASE WHEN nomeComponente = 'processador' THEN 1  WHEN nomeComponente = 'memoria' THEN 2 WHEN nomeComponente = 'disco' THEN 3 END";
+        ConexaoLocal conexaoLocal = new ConexaoLocal();
+        Connection connectionLocal = conexaoLocal.getConexao();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         try {
 
-            ps = Conexao.getConexao().prepareStatement(sql);
+            ps = connectionLocal.prepareStatement(sql);
             ps.setString(1, processador.getId());
             rs = ps.executeQuery();
 
