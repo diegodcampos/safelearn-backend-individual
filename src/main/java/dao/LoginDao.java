@@ -1,8 +1,7 @@
 package dao;
 
-import conexao.Conexao;
-import setup.Logar;
-
+import conexao.ConexaoServer;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,11 +10,13 @@ public class LoginDao {
     public boolean autenticarUsuario(String nomeUsuario, String senha) {
         String sql = "SELECT * FROM usuario WHERE userName = ? AND senhaUsuario = ?";
 
+        ConexaoServer conexaoServer = new ConexaoServer();
+        Connection connectionServer = conexaoServer.getConexao();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         try {
-            ps = Conexao.getConexao().prepareStatement(sql);
+            ps = connectionServer.prepareStatement(sql);
 
             ps.setString(1, nomeUsuario);
             ps.setString(2, senha);
@@ -48,11 +49,13 @@ public class LoginDao {
     public Integer getFkInstituicao(String nomeUsuario) {
         String sql = "SELECT fkInstituicao FROM usuario WHERE userName = ?";
 
+        ConexaoServer conexaoServer = new ConexaoServer();
+        Connection connectionServer = conexaoServer.getConexao();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         try {
-            ps = Conexao.getConexao().prepareStatement(sql);
+            ps = connectionServer.prepareStatement(sql);
             ps.setString(1, nomeUsuario);
             rs = ps.executeQuery();
 
