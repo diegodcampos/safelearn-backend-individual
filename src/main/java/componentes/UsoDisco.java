@@ -1,9 +1,6 @@
 package componentes;
 
-import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.discos.Disco;
-import com.github.britooo.looca.api.group.discos.Volume;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +28,13 @@ public class UsoDisco extends Componente {
         return qtdDiscos;
     }
 
+    public List<Long> getEspacoDisponivel() {
+        List<Long> volumes = new ArrayList<>();
+        for (int i = 0; i < discos.size(); i++) {
+            volumes.add(looca.getGrupoDeDiscos().getVolumes().get(i).getDisponivel() / (1024 * 1024 * 1024));
+        }
+        return volumes;
+    }
 
     @Override
     public String toString() {
