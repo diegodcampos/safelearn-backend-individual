@@ -13,44 +13,35 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MaquinaDaoServer extends MaquinaDao{
+public class MaquinaDaoServer extends MaquinaDao {
+
     @Override
     public Boolean verificarRegistro(UsoProcessador processador) {
-
-        String sql = "SELECT * FROM maquina WHERE idProcessador = (?)";
+        String sql = "SELECT * FROM maquina WHERE idProcessador = ?";
         ConexaoServer conexaoServer = new ConexaoServer();
-        Connection connectionServer = conexaoServer.getConexao();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        try {
-            ps = connectionServer.prepareStatement(sql);
+        try (Connection connectionServer = conexaoServer.getConexao();
+             PreparedStatement ps = connectionServer.prepareStatement(sql)) {
 
             ps.setString(1, processador.getId());
-            rs = ps.executeQuery();
-
-            return rs.next();
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
         } catch (SQLException e) {
             System.out.println("Erro: " + e);
             return false;
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (ps != null) ps.close();
-            } catch (SQLException e) {
-                System.out.println("Erro: " + e);
-            }
         }
     }
+
     @Override
     public void inserirDadosMaquina(UsoProcessador processador, Sistema sistema, Integer fkInstituicao) {
-
-        String sql = "INSERT INTO maquina (idProcessador,nome,sistemaOperacional, fkinstituicao) VALUES (?,?,?,?);";
+        String sql = "INSERT INTO maquina (idProcessador, nome, sistemaOperacional, fkinstituicao) VALUES (?, ?, ?, ?)";
         ConexaoServer conexaoServer = new ConexaoServer();
-        Connection connectionServer = conexaoServer.getConexao();
+        Connection connectionServer = null;
         PreparedStatement ps = null;
 
         try {
+            connectionServer = conexaoServer.getConexao();
+            connectionServer.setAutoCommit(false);
 
             ps = connectionServer.prepareStatement(sql);
 
@@ -60,20 +51,41 @@ public class MaquinaDaoServer extends MaquinaDao{
             ps.setInt(4, fkInstituicao);
 
             ps.executeUpdate();
-            ps.close();
+            connectionServer.commit();
         } catch (SQLException e) {
             System.out.println("Erro: " + e);
+            try {
+                if (connectionServer != null) {
+                    connectionServer.rollback();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Erro ao fazer rollback: " + ex);
+            }
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (connectionServer != null) {
+                    connectionServer.setAutoCommit(true);
+                    connectionServer.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar recursos: " + e);
+            }
         }
     }
+
     @Override
     public void inserirDadosComponente(UsoProcessador processador, MemoriaRam memoria, UsoDisco disco) {
-
         String sql = "INSERT INTO componente (nomeComponente, especificacaoComponente, unidadeDeMedida, fkMaquina) VALUES (?, ?, ?, ?)";
         ConexaoServer conexaoServer = new ConexaoServer();
-        Connection connectionServer = conexaoServer.getConexao();
+        Connection connectionServer = null;
         PreparedStatement ps = null;
 
         try {
+            connectionServer = conexaoServer.getConexao();
+            connectionServer.setAutoCommit(false);
 
             ps = connectionServer.prepareStatement(sql);
 
@@ -94,39 +106,112 @@ public class MaquinaDaoServer extends MaquinaDao{
                 ps.setString(1, "disco");
                 ps.setDouble(2, discoDaVez.getTamanho() / (1024 * 1024 * 1024));
                 ps.setString(3, "GB");
-                ps.setString(4, processador.getId());;
+                ps.setString(4, processador.getId());
                 ps.addBatch();
             }
 
             ps.executeBatch();
-            ps.close();
+            connectionServer.commit();
+        } catch (SQLException e) {
+            System.out.println("Erro: " + e);
+            try {
+                if (connectionServer != null) {
+                    connectionServer.rollback();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Erro ao fazer rollback: " + ex);
+            }
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (connectionServer != null) {
+                    connectionServer.setAutoCommit(true);
+                    connectionServer.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar recursos: " + e);
+            }
+        }
+    }
+
+    @Override
+    public List<Integer> getIdsComponentes(UsoProcessador processador) {
+        List<Integer> idsComponentes = new ArrayList<>();
+        String sql = "SELECT idComponente FROM componente WHERE fkMaquina = ? ORDER BY CASE WHEN nomeComponente = 'processador' THEN 1 WHEN nomeComponente = 'memoria' THEN 2 WHEN nomeComponente = 'disco' THEN 3 END";
+        ConexaoServer conexaoServer = new ConexaoServer();
+        try (Connection connectionServer = conexaoServer.getConexao();
+             PreparedStatement ps = connectionServer.prepareStatement(sql)) {
+
+            ps.setString(1, processador.getId());
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    idsComponentes.add(rs.getInt("idComponente"));
+                }
+            }
         } catch (SQLException e) {
             System.out.println("Erro: " + e);
         }
+        return idsComponentes;
     }
-    @Override
-    public List<Integer> getIdsComponentes(UsoProcessador processador) {
 
-        List<Integer> idsComponentes = new ArrayList<>();
-        String sql = "SELECT idComponente FROM componente WHERE fkMaquina = ? ORDER BY CASE WHEN nomeComponente = 'processador' THEN 1  WHEN nomeComponente = 'memoria' THEN 2 WHEN nomeComponente = 'disco' THEN 3 END";
+    @Override
+    public void monitoramento(UsoProcessador processador, MemoriaRam memoria, UsoDisco disco, List<Integer> idsComponentes) {
+        String sql = "INSERT INTO registro (valorCaptura, fkComponente, fkMaquina) VALUES (?, ?, ?)";
         ConexaoServer conexaoServer = new ConexaoServer();
-        Connection connectionServer = conexaoServer.getConexao();
+        Connection connectionServer = null;
         PreparedStatement ps = null;
-        ResultSet rs = null;
 
         try {
+            connectionServer = conexaoServer.getConexao();
+            connectionServer.setAutoCommit(false);
 
             ps = connectionServer.prepareStatement(sql);
-            ps.setString(1, processador.getId());
-            rs = ps.executeQuery();
 
-            while(rs.next()) {
-                idsComponentes.add(rs.getInt("idComponente"));
+            ps.setDouble(1, processador.getUso());
+            ps.setInt(2, idsComponentes.get(0));
+            ps.setString(3, processador.getId());
+            ps.addBatch();
+
+            ps.setDouble(1, memoria.getMemoriaEmUso());
+            ps.setInt(2, idsComponentes.get(1));
+            ps.setString(3, processador.getId());
+            ps.addBatch();
+
+            List<Long> volumes = disco.getEspacoDisponivel();
+            int j = 2;
+            for (Long volume : volumes) {
+                ps.setDouble(1, volume);
+                ps.setInt(2, idsComponentes.get(j));
+                ps.setString(3, processador.getId());
+                ps.addBatch();
+                j++;
             }
 
-        } catch(SQLException e) {
+            ps.executeBatch();
+            connectionServer.commit();
+        } catch (SQLException e) {
             System.out.println("Erro: " + e);
+            try {
+                if (connectionServer != null) {
+                    connectionServer.rollback();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Erro ao fazer rollback: " + ex);
+            }
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (connectionServer != null) {
+                    connectionServer.setAutoCommit(true);
+                    connectionServer.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Erro ao fechar recursos: " + e);
+            }
         }
-        return idsComponentes;
     }
 }
