@@ -9,7 +9,14 @@ import dao.MaquinaDaoLocal;
 import dao.MaquinaDaoServer;
 
 public class InserirRegistros {
+    private MaquinaDaoLocal maquinaDaoLocal;
+    private MaquinaDaoServer maquinaDaoServer;
+    private LoginDao loginDao;
+
     public InserirRegistros() {
+        this.maquinaDaoLocal = new MaquinaDaoLocal();
+        this.maquinaDaoServer = new MaquinaDaoServer();
+        this.loginDao = new LoginDao();
         inserirRegistros();
     }
 
@@ -19,26 +26,30 @@ public class InserirRegistros {
         MemoriaRam memoria = new MemoriaRam();
         UsoDisco disco = new UsoDisco();
 
-
-        Boolean possuiRegistro;
-        possuiRegistro = new MaquinaDaoServer().verificarRegistro(processador);
         String nomeUsuario = new Logar().getNomeUsuario();
-        Integer fkInstituicao = new LoginDao().getFkInstituicao(nomeUsuario);
+        Integer fkInstituicao = loginDao.getFkInstituicao(nomeUsuario);
 
-        if(!possuiRegistro) {
-            new MaquinaDaoServer().inserirDadosMaquina(processador, sistema, fkInstituicao);
-            new MaquinaDaoServer().inserirDadosComponente(processador, memoria, disco);
-            new MaquinaDaoLocal().inserirDadosMaquina(processador, sistema, fkInstituicao);
-            new MaquinaDaoLocal().inserirDadosComponente(processador, memoria, disco);
+        inserirDadosLocais(processador, memoria, disco, sistema, fkInstituicao);
+        inserirDadosServidor(processador, memoria, disco, sistema, fkInstituicao);
+    }
 
-            System.out.println("Registrado com sucesso!");
-            String toString = processador.toString() + sistema.toString() + memoria.toString() + disco.toString();
-            System.out.println("Aqui estão algumas informações básicas sobre sua máquina:");
-            System.out.println(toString);
+    private void inserirDadosLocais(UsoProcessador processador, MemoriaRam memoria, UsoDisco disco, Sistema sistema, Integer fkInstituicao) {
+        if (!maquinaDaoLocal.verificarRegistro(processador)) {
+            maquinaDaoLocal.inserirDadosMaquina(processador, sistema, fkInstituicao);
+            maquinaDaoLocal.inserirDadosComponente(processador, memoria, disco);
+            System.out.println("Registrado localmente com sucesso!");
         } else {
-            System.out.println("A máquina está sendo monitorada.");
+            System.out.println("A máquina já está registrada localmente.");
         }
     }
 
-
+    private void inserirDadosServidor(UsoProcessador processador, MemoriaRam memoria, UsoDisco disco, Sistema sistema, Integer fkInstituicao) {
+        if (!maquinaDaoServer.verificarRegistro(processador)) {
+            maquinaDaoServer.inserirDadosMaquina(processador, sistema, fkInstituicao);
+            maquinaDaoServer.inserirDadosComponente(processador, memoria, disco);
+            System.out.println("Registrado no servidor com sucesso!");
+        } else {
+            System.out.println("A máquina já está registrada no servidor.");
+        }
+    }
 }
