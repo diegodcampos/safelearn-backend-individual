@@ -19,6 +19,8 @@ public class App {
         MemoriaRam memoriaRam = new MemoriaRam();
         UsoDisco disco = new UsoDisco();
 
+        maquinaDaoServer.setStatus(processador);
+
         List<Integer> idsComponentesServer = maquinaDaoServer.getIdsComponentes(processador);
         List<Integer> idsComponentesLocal = maquinaDaoLocal.getIdsComponentes(processador);
 
@@ -35,6 +37,7 @@ public class App {
             @Override
             public void run() {
                 try {
+                    maquinaDaoServer.executarComandoDeMaquina(processador);
                     maquinaDaoLocal.monitoramento(processador, memoriaRam, disco, idsComponentesLocal);
                     maquinaDaoServer.monitoramento(processador, memoriaRam, disco, idsComponentesServer);
                 } catch (Exception e) {

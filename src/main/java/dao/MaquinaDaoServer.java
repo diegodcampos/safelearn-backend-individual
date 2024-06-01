@@ -6,6 +6,7 @@ import componentes.Sistema;
 import componentes.UsoDisco;
 import componentes.UsoProcessador;
 import conexao.ConexaoServer;
+import systemcommands.SystemCommandExecutor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -132,6 +133,81 @@ public class MaquinaDaoServer extends MaquinaDao {
                 }
             } catch (SQLException e) {
                 System.out.println("Erro ao fechar recursos: " + e);
+            }
+        }
+    }
+
+    public void executarComandoDeMaquina(UsoProcessador processador) {
+        String sql = "SELECT status FROM maquina WHERE idProcessador = ?";
+        ConexaoServer conexaoServer = new ConexaoServer();
+        Connection connectionServer = conexaoServer.getConexao();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            connectionServer.setAutoCommit(false);
+
+            ps = connectionServer.prepareStatement(sql);
+            ps.setString(1, processador.getId());
+            rs = ps.executeQuery();
+
+            if(rs.next()) {
+                Integer status = rs.getInt("status");
+
+                if(status.equals(1)) {
+                    System.out.println("Desligando máquina via comando remoto.");
+                    SystemCommandExecutor.shutdown();
+                } else if(status.equals(2)) {
+                    System.out.println("Reiniciando máquina via comando remoto.");
+                    SystemCommandExecutor.restart();
+                } else if(status.equals(3)) {
+                    System.out.println("Suspendendo máquina via comando remoto.");
+                    SystemCommandExecutor.suspend();
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erro: " + e);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+                connectionServer.close();
+            } catch (SQLException e) {
+                System.out.println("Erro: " + e);
+            }
+        }
+    }
+
+    public void setStatus(UsoProcessador processador) {
+        String sql = "UPDATE maquina SET status = 0 WHERE idProcessador = ?";
+        ConexaoServer conexaoServer = new ConexaoServer();
+        Connection connectionServer = conexaoServer.getConexao();
+        PreparedStatement ps = null;
+
+        try {
+            connectionServer.setAutoCommit(false);
+
+            ps = connectionServer.prepareStatement(sql);
+            ps.setString(1, processador.getId());
+            ps.addBatch();
+
+            ps.executeBatch();
+            connectionServer.commit();
+        } catch (SQLException e) {
+            System.out.println("Erro: " + e);
+            try {
+                connectionServer.rollback();
+            } catch (SQLException ex) {
+                System.out.println("Erro ao fazer rollback: " + ex);
+            }
+        } finally {
+            try {
+                if (ps != null) ps.close();
+                connectionServer.setAutoCommit(true);
+                connectionServer.close();
+            } catch (SQLException e) {
+                System.out.println("Erro: " + e);
             }
         }
     }
