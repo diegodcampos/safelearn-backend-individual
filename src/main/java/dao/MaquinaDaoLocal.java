@@ -135,28 +135,17 @@ public class MaquinaDaoLocal extends MaquinaDao {
         List<Integer> idsComponentes = new ArrayList<>();
         String sql = "SELECT idComponente FROM componente WHERE fkMaquina = ? ORDER BY CASE WHEN nomeComponente = 'processador' THEN 1 WHEN nomeComponente = 'memoria' THEN 2 WHEN nomeComponente = 'disco' THEN 3 END";
         ConexaoLocal conexaoLocal = new ConexaoLocal();
-        Connection connectionLocal = conexaoLocal.getConexao();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
+        try (Connection connectionLocal = conexaoLocal.getConexao();
+             PreparedStatement ps = connectionLocal.prepareStatement(sql)) {
 
-        try {
-            ps = connectionLocal.prepareStatement(sql);
             ps.setString(1, processador.getId());
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                idsComponentes.add(rs.getInt("idComponente"));
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    idsComponentes.add(rs.getInt("idComponente"));
+                }
             }
         } catch (SQLException e) {
             System.out.println("Erro: " + e);
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (ps != null) ps.close();
-                connectionLocal.close();
-            } catch (SQLException e) {
-                System.out.println("Erro: " + e);
-            }
         }
         return idsComponentes;
     }
