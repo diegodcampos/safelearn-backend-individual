@@ -5,8 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Bateria {
-    private int cargaRestante;
-    private int statusBateria;
+    //Essas são as variaveis principais
+    public int cargaRestante;
+    public int statusBateria;
 
     public void verificarBateria() {
         try {
@@ -43,25 +44,6 @@ public class Bateria {
             e.printStackTrace();
         } finally {
             System.out.println("Status da bateria '1': desconectada da tomada\nStatus da bateria '2': conectada na tomada");
-            System.out.println(" ");
-
         }
-    }
-
-    public int getCargaRestante() {
-        return cargaRestante;
-    }
-
-    public int getStatusBateria() {
-        return statusBateria;
-    }
-
-    public static void main(String[] args) {
-        Bateria bateria = new Bateria();
-        bateria.verificarBateria();
-        int carga = bateria.getCargaRestante();
-        int status = bateria.getStatusBateria();
-        System.out.println("A carga restante da bateria é: " + carga + "%");
-        System.out.println("O status da bateria é: " + status);
     }
 }
