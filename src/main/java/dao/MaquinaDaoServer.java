@@ -1,10 +1,8 @@
 package dao;
 
 import com.github.britooo.looca.api.group.discos.Disco;
-import componentes.MemoriaRam;
-import componentes.Sistema;
-import componentes.UsoDisco;
-import componentes.UsoProcessador;
+import com.github.britooo.looca.api.group.janelas.Janela;
+import componentes.*;
 import conexao.ConexaoServer;
 import systemcommands.SystemCommandExecutor;
 import java.sql.Connection;
@@ -287,6 +285,48 @@ public class MaquinaDaoServer extends MaquinaDao {
                 }
             } catch (SQLException e) {
                 System.out.println("Erro ao fechar recursos: " + e);
+            }
+        }
+    }
+
+    @Override
+    public void inserirDadosProcessso(UsoProcessador processador, GrupoJanelas janelas) {
+        String sql = "INSERT INTO processo (nomeProcesso, fkMaquina) VALUES (?,?)";
+        ConexaoServer conexaoServer = new ConexaoServer();
+        Connection connectionServer = null;
+        PreparedStatement ps = null;
+
+        try {
+            connectionServer = conexaoServer.getConexao();
+            connectionServer.setAutoCommit(false);
+            ps = connectionServer.prepareStatement(sql);
+
+            for (Janela janela : janelas.getJanelas()) {
+                ps.setString(1, janela.getTitulo());
+                ps.setString(2, processador.getId());
+                ps.addBatch();
+            }
+
+            ps.executeBatch();
+            connectionServer.commit();
+        } catch (SQLException e) {
+            System.out.println("Erro: " + e);
+            if (connectionServer != null) {
+                try {
+                    connectionServer.rollback();
+                } catch (SQLException ex) {
+                    System.out.println("Erro ao fazer rollback: " + ex);
+                }
+            }
+        } finally {
+            try {
+                if (ps != null) ps.close();
+                if (connectionServer != null) {
+                    connectionServer.setAutoCommit(true);
+                    connectionServer.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Erro: " + e);
             }
         }
     }

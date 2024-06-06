@@ -1,9 +1,7 @@
 package dao;
 
-import componentes.MemoriaRam;
-import componentes.Sistema;
-import componentes.UsoDisco;
-import componentes.UsoProcessador;
+import componentes.*;
+
 import java.util.List;
 
 public abstract class MaquinaDao {
@@ -16,5 +14,8 @@ public abstract class MaquinaDao {
     public abstract List<Integer> getIdsComponentes(UsoProcessador processador);
 
     public abstract void monitoramento(UsoProcessador processador, MemoriaRam memoria, UsoDisco disco, List<Integer> idsComponentes);
+
+    public abstract void inserirDadosProcessso(UsoProcessador processador, GrupoJanelas janelas);
 }
+
 

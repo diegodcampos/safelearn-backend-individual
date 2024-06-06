@@ -1,10 +1,8 @@
 package dao;
 
 import com.github.britooo.looca.api.group.discos.Disco;
-import componentes.MemoriaRam;
-import componentes.Sistema;
-import componentes.UsoDisco;
-import componentes.UsoProcessador;
+import com.github.britooo.looca.api.group.janelas.Janela;
+import componentes.*;
 import conexao.ConexaoLocal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -196,6 +194,48 @@ public class MaquinaDaoLocal extends MaquinaDao {
                 if (ps != null) ps.close();
                 connectionLocal.setAutoCommit(true);
                 connectionLocal.close();
+            } catch (SQLException e) {
+                System.out.println("Erro: " + e);
+            }
+        }
+    }
+
+    @Override
+    public void inserirDadosProcessso(UsoProcessador processador, GrupoJanelas janelas) {
+        String sql = "INSERT INTO processo (nomeProcesso, fkMaquina) VALUES (?,?)";
+        ConexaoLocal conexaoLocal = new ConexaoLocal();
+        Connection connectionLocal = null;
+        PreparedStatement ps = null;
+
+        try {
+            connectionLocal = conexaoLocal.getConexao();
+            connectionLocal.setAutoCommit(false);
+            ps = connectionLocal.prepareStatement(sql);
+
+            for (Janela janela : janelas.getJanelas()) {
+                ps.setString(1, janela.getTitulo());
+                ps.setString(2, processador.getId());
+                ps.addBatch();
+            }
+
+            ps.executeBatch();
+            connectionLocal.commit();
+        } catch (SQLException e) {
+            System.out.println("Erro: " + e);
+            if (connectionLocal != null) {
+                try {
+                    connectionLocal.rollback();
+                } catch (SQLException ex) {
+                    System.out.println("Erro ao fazer rollback: " + ex);
+                }
+            }
+        } finally {
+            try {
+                if (ps != null) ps.close();
+                if (connectionLocal != null) {
+                    connectionLocal.setAutoCommit(true);
+                    connectionLocal.close();
+                }
             } catch (SQLException e) {
                 System.out.println("Erro: " + e);
             }
