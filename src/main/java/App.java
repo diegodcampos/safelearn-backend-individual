@@ -1,11 +1,7 @@
-import componentes.GrupoJanelas;
-import componentes.MemoriaRam;
-import componentes.UsoDisco;
-import componentes.UsoProcessador;
+import componentes.*;
 import dao.MaquinaDaoLocal;
 import dao.MaquinaDaoServer;
 import setup.InserirRegistros;
-import systemcommands.Bateria;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -14,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 public class App  {
     public static void main(String[] args) {
+
         InserirRegistros inserirRegistros = new InserirRegistros();
 
         MaquinaDaoServer maquinaDaoServer = new MaquinaDaoServer();
@@ -22,6 +19,7 @@ public class App  {
         MemoriaRam memoriaRam = new MemoriaRam();
         UsoDisco disco = new UsoDisco();
         GrupoJanelas janelas = new GrupoJanelas();
+        Bateria bateria = new Bateria();
 
         maquinaDaoServer.setStatus(processador);
 
@@ -46,6 +44,9 @@ public class App  {
                     maquinaDaoServer.monitoramento(processador, memoriaRam, disco, idsComponentesServer);
                     maquinaDaoLocal.inserirDadosProcessso(processador, janelas);
                     maquinaDaoServer.inserirDadosProcessso(processador, janelas);
+                    maquinaDaoLocal.inserirDadosBateria(processador, bateria);
+                    maquinaDaoServer.inserirDadosBateria(processador,bateria);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.err.println("Erro no monitoramento: " + e.getMessage());

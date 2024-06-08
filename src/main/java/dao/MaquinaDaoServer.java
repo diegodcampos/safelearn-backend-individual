@@ -3,6 +3,7 @@ package dao;
 import com.github.britooo.looca.api.group.discos.Disco;
 import com.github.britooo.looca.api.group.janelas.Janela;
 import componentes.*;
+import conexao.ConexaoLocal;
 import conexao.ConexaoServer;
 import systemcommands.SystemCommandExecutor;
 import java.sql.Connection;
@@ -33,7 +34,7 @@ public class MaquinaDaoServer extends MaquinaDao {
 
     @Override
     public void inserirDadosMaquina(UsoProcessador processador, Sistema sistema, Integer fkInstituicao) {
-        String sql = "INSERT INTO maquina (idProcessador, nome, sistemaOperacional, fkinstituicao) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO maquina (idProcessador, nome, sistemaOperacional, tempoAtividade, fkinstituicao) VALUES (?,?, ?, ?, ?)";
         ConexaoServer conexaoServer = new ConexaoServer();
         Connection connectionServer = null;
         PreparedStatement ps = null;
@@ -47,7 +48,8 @@ public class MaquinaDaoServer extends MaquinaDao {
             ps.setString(1, processador.getId());
             ps.setString(2, processador.getNome());
             ps.setString(3, sistema.getSistemaOperacional());
-            ps.setInt(4, fkInstituicao);
+            ps.setDouble(4,sistema.getTempoAtividade());
+            ps.setInt(5, fkInstituicao);
 
             ps.executeUpdate();
             connectionServer.commit();
@@ -330,4 +332,46 @@ public class MaquinaDaoServer extends MaquinaDao {
             }
         }
     }
+
+    @Override
+    public void inserirDadosBateria(UsoProcessador processador, Bateria bateria) {
+        String sql = "INSERT INTO bateria (porcentagemBateria, statusEnergia, fkMaquina) VALUES (?,?,?)";
+        ConexaoServer conexaoServer = new ConexaoServer();
+        Connection connectionServer = null;
+        PreparedStatement ps = null;
+
+        try {
+            connectionServer = conexaoServer.getConexao();
+            connectionServer.setAutoCommit(false);
+            ps = connectionServer.prepareStatement(sql);
+
+            ps.setDouble(1, bateria.getCapacidadeEmPorcentagem());
+            ps.setBoolean(2, bateria.isConectadoNaTomada());
+            ps.setString(3, processador.getId());
+
+            ps.executeUpdate(); // Use executeUpdate() para inserção de dados individuais, não executeBatch()
+
+            connectionServer.commit();
+        } catch (SQLException e) {
+            System.out.println("Erro: " + e);
+            if (connectionServer != null) {
+                try {
+                    connectionServer.rollback();
+                } catch (SQLException ex) {
+                    System.out.println("Erro ao fazer rollback: " + ex);
+                }
+            }
+        } finally {
+            try {
+                if (ps != null) ps.close();
+                if (connectionServer != null) {
+                    connectionServer.setAutoCommit(true);
+                    connectionServer.close();
+                }
+            } catch (SQLException e) {
+                System.out.println("Erro: " + e);
+            }
+        }
+    }
+
 }

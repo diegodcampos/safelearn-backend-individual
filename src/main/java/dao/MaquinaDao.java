@@ -16,6 +16,8 @@ public abstract class MaquinaDao {
     public abstract void monitoramento(UsoProcessador processador, MemoriaRam memoria, UsoDisco disco, List<Integer> idsComponentes);
 
     public abstract void inserirDadosProcessso(UsoProcessador processador, GrupoJanelas janelas);
+
+    public abstract void inserirDadosBateria(UsoProcessador processador, Bateria bateria);
 }
 
 

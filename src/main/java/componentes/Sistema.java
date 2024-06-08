@@ -10,7 +10,7 @@ public class Sistema extends Componente{
     private String fabricante;
 
     public Sistema(){
-       super();
+        super();
         inicializarInformacoes();
     }
 
@@ -20,6 +20,7 @@ public class Sistema extends Componente{
         this.sistemaOperacional = looca.getSistema().getSistemaOperacional();
         this.arquitetura = looca.getSistema().getArquitetura();
         this.fabricante = looca.getSistema().getFabricante();
+        this.tempoAtividade = looca.getSistema().getTempoDeAtividade();
     }
 
     @Override
@@ -57,4 +58,11 @@ public class Sistema extends Componente{
     public String getFabricante() {
         return fabricante;
     }
+
+    public static void main(String[] args) {
+        Sistema sistema = new Sistema();
+        System.out.println(sistema);
+    }
+
+
 }

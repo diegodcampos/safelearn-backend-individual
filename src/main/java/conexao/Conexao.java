@@ -12,6 +12,7 @@ public abstract class Conexao {
     protected abstract String getUrl();
 
     public Connection getConexao() {
+
         try {
             if (connection == null || connection.isClosed()) {
                 connection = DriverManager.getConnection(getUrl(), getUser(), password);
