@@ -9,7 +9,7 @@ import java.util.List;
 
 public class SlackIntegracao {
 
-    private static final String WEBHOOK_URL = "https://hooks.slack.com/services/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";
+    private static final String WEBHOOK_URL = "https://hooks.slack.com/services/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";
 
     private static final double RAM_LIMITE = 70.0;
     private static final double RAM_CRITICO = 90.0;
@@ -33,17 +33,13 @@ public class SlackIntegracao {
             }
 
             int responseCode = connection.getResponseCode();
-            if (responseCode == 200) {
-                System.out.println("Mensagem enviada com sucesso.");
-            } else {
-                System.out.println("Erro ao enviar a mensagem. Response Code: " + responseCode);
-            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void main(String[] args) {
+    public void alertSlack() {
         MemoriaRam memoriaRam = new MemoriaRam();
         UsoProcessador processador = new UsoProcessador();
         UsoDisco disco = new UsoDisco();

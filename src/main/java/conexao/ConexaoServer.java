@@ -1,6 +1,6 @@
 package conexao;
 
-public class ConexaoServer extends Conexao{
+public class ConexaoServer extends Conexao {
     @Override
     protected String getUser() {
         return "sa";

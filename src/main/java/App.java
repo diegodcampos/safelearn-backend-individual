@@ -20,8 +20,8 @@ public class App  {
         UsoDisco disco = new UsoDisco();
         GrupoJanelas janelas = new GrupoJanelas();
         Bateria bateria = new Bateria();
-
         maquinaDaoServer.setStatus(processador);
+        SlackIntegracao slackIntegracao = new SlackIntegracao();
 
         List<Integer> idsComponentesServer = maquinaDaoServer.getIdsComponentes(processador);
         List<Integer> idsComponentesLocal = maquinaDaoLocal.getIdsComponentes(processador);
@@ -42,11 +42,11 @@ public class App  {
                     maquinaDaoServer.executarComandoDeMaquina(processador);
                     maquinaDaoLocal.monitoramento(processador, memoriaRam, disco, idsComponentesLocal);
                     maquinaDaoServer.monitoramento(processador, memoriaRam, disco, idsComponentesServer);
+                    slackIntegracao.alertSlack();
                     maquinaDaoLocal.inserirDadosProcessso(processador, janelas);
                     maquinaDaoServer.inserirDadosProcessso(processador, janelas);
                     maquinaDaoLocal.inserirDadosBateria(processador, bateria);
                     maquinaDaoServer.inserirDadosBateria(processador,bateria);
-
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.err.println("Erro no monitoramento: " + e.getMessage());
