@@ -45,4 +45,8 @@ public class MemoriaRam extends Componente {
     public Double getMemoriaDisponivel() {
         return memoriaDisponivel;
     }
+
+    public double getUso() {
+        return (memoriaEmUso / memoriaTotal) * 100;
+    }
 }

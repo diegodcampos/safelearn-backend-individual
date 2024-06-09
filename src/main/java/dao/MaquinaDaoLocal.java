@@ -259,7 +259,7 @@ public class MaquinaDaoLocal extends MaquinaDao {
             ps.setBoolean(2, bateria.isConectadoNaTomada());
             ps.setString(3, processador.getId());
 
-            ps.executeUpdate(); // Utilize executeUpdate() para inserção de dados individuais, não executeBatch()
+            ps.executeUpdate();
 
             connectionLocal.commit();
         } catch (SQLException e) {

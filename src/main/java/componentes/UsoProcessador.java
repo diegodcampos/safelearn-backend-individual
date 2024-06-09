@@ -49,7 +49,6 @@ public class UsoProcessador extends Componente {
         return id;
     }
 
-
     public Double getUso() {
         return uso;
     }
@@ -57,6 +56,7 @@ public class UsoProcessador extends Componente {
     public Long getFrequencia() {
         return frequencia;
     }
+
 
 
 }
