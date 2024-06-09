@@ -2,7 +2,7 @@ package componentes;
 
 import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.discos.Disco;
-
+import java.util.ArrayList;
 import java.util.List;
 
 public class UsoDisco extends Componente {
@@ -20,7 +20,14 @@ public class UsoDisco extends Componente {
         Looca looca = new Looca();
         this.discos = looca.getGrupoDeDiscos().getDiscos();
         this.qtdDiscos = looca.getGrupoDeDiscos().getQuantidadeDeDiscos();
+    }
 
+    public List<Long> getEspacoDisponivel() {
+        List<Long> volumes = new ArrayList<>();
+        for (int i = 0; i < discos.size(); i++) {
+            volumes.add(looca.getGrupoDeDiscos().getVolumes().get(i).getDisponivel() / (1024 * 1024 * 1024));
+        }
+        return volumes;
     }
 
     public List<Disco> getDiscos() {
@@ -30,13 +37,6 @@ public class UsoDisco extends Componente {
     public Integer getQtdDiscos() {
         return qtdDiscos;
     }
-
-    public Double getUso(){
-      return 1.4;
-    }
-
-    //Coloquei esse get só pro código n subir errado//
-
 
     @Override
     public String toString() {

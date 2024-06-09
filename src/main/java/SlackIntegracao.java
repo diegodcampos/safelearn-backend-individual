@@ -1,10 +1,11 @@
+import com.github.britooo.looca.api.group.discos.Disco;
 import componentes.MemoriaRam;
 import componentes.UsoDisco;
 import componentes.UsoProcessador;
-
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 public class SlackIntegracao {
 
@@ -16,14 +17,6 @@ public class SlackIntegracao {
     private static final double CPU_CRITICO = 90.0;
     private static final double DISCO_LIMITE = 70.0;
     private static final double DISCO_CRITICO = 90.0;
-
-
-
-
-    //VC precisa pegar o uso do disco em porcentagem, e arrumar no if aqui em baixo de acordo com os parametros de alerta ali em cima//
-    //Bem facil né//
-    //Boa sorte//
-
 
     public static void sendAlert(String message) {
         try {
@@ -57,7 +50,8 @@ public class SlackIntegracao {
 
         double usoRam = memoriaRam.getUso();
         double usoCpu = processador.getUso();
-        double usoDisco = disco.getUso();
+        List<Disco> discos = disco.getDiscos();
+        List<Long> espacoDisponivel = disco.getEspacoDisponivel();
 
         if (usoRam > RAM_CRITICO) {
             sendAlert(String.format("🚨 Alerta Crítico: A memória RAM está com utilização crítica de recursos: %.2f%%. Ação imediata necessária!", usoRam));
@@ -71,10 +65,17 @@ public class SlackIntegracao {
             sendAlert(String.format("⚠️ Alerta de Desempenho: O processador está com alta utilização de recursos: %.2f%%. Verifique o status para prevenir possíveis falhas.", usoCpu));
         }
 
-        if (usoDisco > DISCO_CRITICO) {
-            sendAlert(String.format("🚨 Alerta Crítico: O disco está com utilização crítica de recursos: %.2f%%. Ação imediata necessária!", usoDisco));
-        } else if (usoDisco > DISCO_LIMITE) {
-            sendAlert(String.format("⚠️ Alerta de Desempenho: O disco está com alta utilização de recursos: %.2f%%. Verifique o status para prevenir possíveis falhas.", usoDisco));
+        for (int i = 0; i < discos.size(); i++) {
+            Disco discoAtual = discos.get(i);
+            long tamanhoDisco = discoAtual.getTamanho();
+            long espacoLivre = espacoDisponivel.get(i);
+            double ocupacao = (double) (tamanhoDisco - espacoLivre) / tamanhoDisco * 100;
+
+            if (ocupacao > DISCO_CRITICO) {
+                sendAlert(String.format("🚨 Alerta Crítico: O disco está com utilização crítica de recursos: %.2f%%. Ação imediata necessária!", ocupacao));
+            } else if (ocupacao > DISCO_LIMITE) {
+                sendAlert(String.format("⚠️ Alerta de Desempenho: O disco está com alta utilização de recursos: %.2f%%. Verifique o status para prevenir possíveis falhas.", ocupacao));
+            }
         }
     }
 }
