@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MaquinaDaoLocal extends MaquinaDao {
+
     @Override
     public Boolean verificarRegistro(UsoProcessador processador) {
         String sql = "SELECT * FROM maquina WHERE idProcessador = (?)";
@@ -151,6 +152,10 @@ public class MaquinaDaoLocal extends MaquinaDao {
 
     @Override
     public void monitoramento(UsoProcessador processador, MemoriaRam memoria, UsoDisco disco, List<Integer> idsComponentes) {
+        if (idsComponentes == null || idsComponentes.isEmpty() || idsComponentes.size() < 2) {
+            throw new IllegalStateException("idsComponentes is null, empty, or does not contain enough elements");
+        }
+
         String sql = "INSERT INTO registro (valorCaptura, fkComponente, fkMaquina) VALUES (?, ?, ?)";
         ConexaoLocal conexaoLocal = new ConexaoLocal();
         Connection connectionLocal = conexaoLocal.getConexao();
@@ -161,19 +166,25 @@ public class MaquinaDaoLocal extends MaquinaDao {
 
             ps = connectionLocal.prepareStatement(sql);
 
+            // Processador
             ps.setDouble(1, processador.getUso());
             ps.setInt(2, idsComponentes.get(0));
             ps.setString(3, processador.getId());
             ps.addBatch();
 
+            // Memória
             ps.setDouble(1, memoria.getMemoriaEmUso());
             ps.setInt(2, idsComponentes.get(1));
             ps.setString(3, processador.getId());
             ps.addBatch();
 
+            // Discos
             List<Long> volumes = disco.getEspacoDisponivel();
             Integer j = 2;
             for (int i = 0; i < volumes.size(); i++) {
+                if (j >= idsComponentes.size()) {
+                    throw new IndexOutOfBoundsException("Not enough idsComponentes for all disks");
+                }
                 ps.setDouble(1, volumes.get(i));
                 ps.setInt(2, idsComponentes.get(j));
                 ps.setString(3, processador.getId());
@@ -190,6 +201,8 @@ public class MaquinaDaoLocal extends MaquinaDao {
             } catch (SQLException ex) {
                 System.out.println("Erro ao fazer rollback: " + ex);
             }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Erro: " + e);
         } finally {
             try {
                 if (ps != null) ps.close();
@@ -284,4 +297,3 @@ public class MaquinaDaoLocal extends MaquinaDao {
         }
     }
 }
-

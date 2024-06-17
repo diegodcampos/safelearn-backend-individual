@@ -15,11 +15,18 @@ public class Bateria extends Componente {
 
     @Override
     public void inicializarInformacoes() {
-        obterStatusBateria();
-        obterCapacidadeBateria();
+        if (isWindows()) {
+            obterStatusBateriaWindows();
+            obterCapacidadeBateriaWindows();
+        } else if (isLinux()) {
+            obterStatusBateriaLinux();
+            obterCapacidadeBateriaLinux();
+        } else {
+            System.out.println("Sistema operacional não suportado");
+        }
     }
 
-    private void obterStatusBateria() {
+    private void obterStatusBateriaWindows() {
         try {
             Process process = Runtime.getRuntime().exec("wmic path Win32_Battery get BatteryStatus");
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
@@ -43,7 +50,7 @@ public class Bateria extends Componente {
         }
     }
 
-    private void obterCapacidadeBateria() {
+    private void obterCapacidadeBateriaWindows() {
         try {
             Process process = Runtime.getRuntime().exec("wmic path Win32_Battery get EstimatedChargeRemaining");
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
@@ -64,6 +71,54 @@ public class Bateria extends Componente {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void obterStatusBateriaLinux() {
+        try {
+            Process process = Runtime.getRuntime().exec("upower -i $(upower -e | grep BAT) | grep state");
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (line.contains("state:")) {
+                        String state = line.split(":")[1].trim();
+                        conectadoNaTomada = !state.equals("discharging");
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void obterCapacidadeBateriaLinux() {
+        try {
+            Process process = Runtime.getRuntime().exec("upower -i $(upower -e | grep BAT) | grep percentage");
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (line.contains("percentage:")) {
+                        String percentage = line.split(":")[1].trim().replace("%", "");
+                        try {
+                            capacidadeEmPorcentagem = Double.parseDouble(percentage);
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean isWindows() {
+        return System.getProperty("os.name").toLowerCase().contains("win");
+    }
+
+    private boolean isLinux() {
+        return System.getProperty("os.name").toLowerCase().contains("nix") ||
+                System.getProperty("os.name").toLowerCase().contains("nux") ||
+                System.getProperty("os.name").toLowerCase().contains("aix");
     }
 
     public boolean isConectadoNaTomada() {
